@@ -1,0 +1,530 @@
+{
+    "zoro":  {
+                 "passive":  {
+                                 "title":  "Unbreakable Will - Ý chí Kiếm Sĩ",
+                                 "description":  "Khi bắt đầu trận, Zoro nhận 1 tầng Unbreakable Will (trạng thái cường hóa riêng của Zoro, tối đa 3 tầng; mỗi tầng tăng 3% DEF và 5% ATK đến hết trận). Mỗi lần chịu sát thương nhận thêm 1 tầng.\nKhi nhận đòn đánh kết liễu, lập tức giữ lại 1 HP, đồng thời xóa toàn bộ hiệu ứng bất lợi (tối đa một lần mỗi trận) và hồi ngay 50 nộ."
+                             },
+                 "basic":  {
+                               "title":  "Oni Giri – Quỷ Trảm",
+                               "description":  "Zoro kết hợp hai thanh kiếm, tung ra một nhát chém chéo với tốc độ cao gây sát thương bằng 90% ATK lên một mục tiêu."
+                           },
+                 "s1":  {
+                            "title":  "Tatsu Maki - Long Quyển Phong",
+                            "description":  "Zoro xoay người, vung kiếm tạo thành một cơn lốc kiếm khí bao quanh và tấn công một mục tiêu 3 lần, mỗi lần gây 75% ATK (Tổng 225% ATK). Đồng thời có 30% tỷ lệ gây hiệu ứng Bleed (mất 5% HP) trong 2 lượt."
+                        },
+                 "s2":  {
+                            "title":  "Shishi Sonson - Sư Tử Ca",
+                            "description":  "Zoro tập trung toàn bộ sức mạnh tăng thêm 20% Crit Rate và 200% Crit Damage, tung ra một đường chém cực nhanh quét qua hàng ngang kẻ địch gây sát thương 170% ATK (bỏ qua 20% DEF).\nNếu mục tiêu đang chịu hiệu ứng Bleed, sát thương của kỹ năng tăng thêm 20%."
+                        },
+                 "ult":  {
+                             "title":  "Three Thousand Worlds - Tam Thiên Thế Giới",
+                             "description":  "Zoro giải phóng sức mạnh Ashura, tạo ra hình ảnh chín thanh kiếm. Với tốc độ và sức mạnh vượt trội, Zoro nhắm vào mục tiêu có HP thấp nhất bên địch rồi vung kiếm thực hiện 6 nhát chém gây 110% ATK mỗi lần. Nhát chém cuối cùng chắc chắn chí mạng kèm thêm 250% Crit Damage.\nNếu mục tiêu bị hạ gục bởi Ultimate, Zoro lập tức thực hiện lại Ultimate một lần nữa với sát thương giảm còn 30% (tối đa một lần)."
+                         }
+             },
+    "marco":  {
+                  "passive":  {
+                                  "title":  "Phoenix Regeneration - Phượng Hoàng Tái Sinh",
+                                  "description":  "Marco tăng 20% hiệu quả hồi phục. Khi bắt đầu mỗi hiệp, Marco nhận hiệu ứng Phoenix Flame (trạng thái ngọn lửa bảo hộ riêng của Marco, tối đa 3 lần: hấp thụ đòn đánh gây sát thương đầu tiên và chuyển 8% lượng sát thương hấp thụ thành HP tối đa, Phoenix Flame biến mất ngay sau khi hấp thụ đòn đánh). Marco miễn nhiễm với Burn.\nKhi nhận đòn đánh kết liễu, Marco hóa thành Phượng Hoàng, phản lại 30% sát thương nhận được chia đều lên toàn bộ kẻ địch rồi tan biến."
+                              },
+                  "basic":  {
+                                "title":  "Phoenix Brand - Hỏa Điểu Trảo",
+                                "description":  "Marco hóa thành Phượng Hoàng, lao vào tấn công một mục tiêu, gây 70% MAG sát thương. Hồi HP cho đồng đội có HP thấp nhất một lượng bằng 70% MAG."
+                            },
+                  "s1":  {
+                             "title":  "Blue Bird - Thanh Hỏa Điểu",
+                             "description":  "Marco tăng cho toàn đội 15% DEF và 10% Kháng Hiệu Ứng trong 2 lượt, đồng thời hồi HP cho toàn bộ đồng đội bằng 120% MAG."
+                         },
+                  "s2":  {
+                             "title":  "Blue Flame Regeneration - Thanh Hỏa Tái Sinh",
+                             "description":  "Marco giải phóng ngọn lửa xanh bao bọc đồng đội có Công cao nhất và đồng đội có HP thấp nhất, tạo Lá Chắn bằng 15% HP tối đa của Marco cho mỗi mục tiêu và hồi HP cho cả hai bằng 80% MAG."
+                         },
+                  "ult":  {
+                              "title":  "Phoenix Rebirth - Phượng Hoàng Tái Sinh",
+                              "description":  "Marco hóa thành Phượng Hoàng và bao phủ toàn đội bằng ngọn lửa hồi sinh, hồi HP cho toàn bộ đồng đội bằng 380% MAG, giải toàn bộ hiệu ứng xấu và tăng 10% DEF cho toàn đội trong 2 lượt.\nHồi sinh 1 đồng đội đã bị hạ gục với 35% Max HP (tối đa 1 lần mỗi trận)."
+                          }
+              },
+    "chopper":  {
+                    "passive":  {
+                                    "title":  "Rumble Ball - Viên Thuốc Biến Hình",
+                                    "description":  "Tăng 12% hiệu quả hồi phục. Khi đồng đội đầu tiên trong trận có HP giảm xuống dưới 40%, Chopper lập tức kích hoạt trạng thái phòng thủ Guard Point (dạng biến hình lông dày đặc thù của Chopper giúp tạo lớp Lá Chắn hấp thụ sát thương và gia tăng phòng ngự), tạo Lá Chắn cho đồng đội đó bằng 90% MAG và tăng 15% DEF trong 2 lượt (tối đa 1 lần mỗi trận)."
+                                },
+                    "basic":  {
+                                  "title":  "Hoof Roseo – Cước Hoa Đào",
+                                  "description":  "Chopper tung cú đá chính xác vào một mục tiêu gây 70% MAG sát thương, đồng thời hồi HP cho đồng đội có HP thấp nhất một lượng bằng 40% MAG."
+                              },
+                    "s1":  {
+                               "title":  "Injection Shot - Mũi Tiêm Chữa Trị",
+                               "description":  "Chopper điều chế thảo dược đặc trị, hồi HP cho 2 đồng đội có HP thấp nhất bằng 120% MAG và tăng cho đồng đội có công cao nhất 30 năng lượng."
+                           },
+                    "s2":  {
+                               "title":  "Guard Point - Phòng Thủ Tuyệt Đối",
+                               "description":  "Chopper phồng lớp lông dày kích hoạt Guard Point diện rộng, tạo Lá Chắn bảo vệ toàn đội bằng 70% MAG và tăng 10% DEF cho toàn đội trong 1 lượt."
+                           },
+                    "ult":  {
+                                "title":  "Cherry Blossom Miracle - Kỳ Tích Hoa Anh Đào",
+                                "description":  "Chopper giải phóng dược lực tối đa, hồi HP cho toàn bộ đồng đội bằng 230% MAG, xóa 1 hiệu ứng bất lợi trên mỗi đồng đội và ban hiệu ứng Hồi Phục Liên Tục (hồi 35% MAG mỗi đầu lượt) trong 2 lượt."
+                            }
+                },
+    "reiju":  {
+                  "passive":  {
+                                  "title":  "Poison Absorption - Hấp Thụ Kịch Độc",
+                                  "description":  "Reiju miễn nhiễm với hiệu ứng Poison. Mỗi khi kẻ địch chịu sát thương từ hiệu ứng Poison, Reiju kích hoạt Poison Absorption (cơ chế hấp thụ độc tố riêng của Reiju giúp chuyển hóa sát thương độc thành năng lượng và cường hóa phép thuật đến hết trận), hồi 4 năng lượng (tối đa 12 năng lượng mỗi lượt) và tăng 3% MAG (tối đa 4 tầng)."
+                              },
+                  "basic":  {
+                                "title":  "Pink Hornet – Ong Độc Hồng",
+                                "description":  "Reiju phóng luồng độc khí vào một mục tiêu gây 80% MAG sát thương và có 50% tỷ lệ gây hiệu ứng Poison (mất 4% HP tối đa mỗi lượt, không vượt quá 75% MAG của Reiju) trong 2 lượt."
+                            },
+                  "s1":  {
+                             "title":  "Venom Breath - Hơi Thở Kịch Độc",
+                             "description":  "Reiju thổi làn sương độc vào hàng trước kẻ địch gây 120% MAG sát thương, có 70% tỷ lệ gây hiệu ứng Poison (mất 4% HP tối đa, tối đa 75% MAG) và giảm 12% DEF trong 2 lượt."
+                         },
+                  "s2":  {
+                             "title":  "Toxic Sting - Mũi Chích Tử Thần",
+                             "description":  "Reiju lao tới tấn công mục tiêu có nhiều tầng Poison nhất gây 210% MAG sát thương. Nếu mục tiêu đang chịu hiệu ứng Poison, lập tức kích nổ 1 lượt sát thương Poison hiện có trên mục tiêu và tăng 20% sát thương kỹ năng."
+                         },
+                  "ult":  {
+                              "title":  "Vinsmoke Venom Storm - Bão Độc Vinsmoke",
+                              "description":  "Reiju tung cánh phát tán kịch độc lên toàn bộ kẻ địch gây 210% MAG sát thương, áp đặt hiệu ứng Poison (mất 4% HP tối đa, tối đa 75% MAG) và giảm 20% hiệu quả hồi máu nhận vào của kẻ địch trong 2 lượt."
+                          }
+              },
+    "shanks":  {
+                   "passive":  {
+                                   "title":  "Conqueror\u0027s Dominance - Bá Vương Uy Áp",
+                                   "description":  "Khi bắt đầu trận, Shanks giải phóng trường uy áp Conqueror\u0027s Dominance (hào quang Haki Bá Vương áp chế riêng của Shanks lên toàn đội hình địch), giảm 10% ATK và 10% MAG của toàn bộ kẻ địch trong 2 lượt. Các đòn tấn công của Shanks bỏ qua 20% DEF của mục tiêu và tăng 15% Chính xác."
+                               },
+                   "basic":  {
+                                 "title":  "Gryphon Slash – Trảm Kích Gryphon",
+                                 "description":  "Shanks vung thanh kiếm Gryphon bọc Haki Vũ Trang, chém một mục tiêu gây 90% ATK sát thương và tăng 15% Crit Rate cho bản thân trong 1 lượt."
+                             },
+                   "s1":  {
+                              "title":  "Conqueror\u0027s Pressure - Áp Chế Bá Vương",
+                              "description":  "Shanks dồn Haki Bá Vương vào mũi kiếm đâm thẳng một mục tiêu gây 210% ATK sát thương, xóa 1 hiệu ứng có lợi của mục tiêu và có 40% tỷ lệ gây hiệu ứng Silence (Câm Lặng) trong 1 lượt."
+                          },
+                   "s2":  {
+                              "title":  "Haki Flash - Hào Quang Haki",
+                              "description":  "Shanks lướt đi với tốc độ cao, chém xuyên hàng dọc kẻ địch gây 180% ATK sát thương kèm thêm 160% Crit Damage. Nếu mục tiêu có HP trên 70%, sát thương của kỹ năng tăng thêm 20%."
+                          },
+                   "ult":  {
+                               "title":  "Divine Departure - Thần Tị",
+                               "description":  "Shanks truyền toàn bộ Haki Bá Vương vào thanh Gryphon, tung nhát chém hủy diệt vào một mục tiêu gây 510% ATK sát thương (bỏ qua 30% DEF). Nếu mục tiêu bị hạ gục, Shanks lan tỏa sóng xung kích gây 140% ATK sát thương lên toàn bộ kẻ địch còn lại và hồi ngay 30 nộ (tối đa 1 lần mỗi lượt)."
+                           }
+               },
+    "sabo":  {
+                 "passive":  {
+                                 "title":  "Inheritor of Will - Kế Thừa Ý Chí",
+                                 "description":  "Sabo miễn nhiễm với hiệu ứng Burn. Khi tấn công mục tiêu đang chịu hiệu ứng Burn, Sabo nhận thêm 12% Crit Rate và bỏ qua 15% DEF của mục tiêu."
+                             },
+                 "basic":  {
+                               "title":  "Dragon Claw Fist – Long Trảo Quyền",
+                               "description":  "Sabo tung cú đánh bọc Haki và ngọn lửa vào một mục tiêu gây 80% MAG sát thương, có 50% tỷ lệ gây hiệu ứng Burn (gây 30% MAG sát thương mỗi lượt) trong 2 lượt."
+                           },
+                 "s1":  {
+                            "title":  "Hiken - Hỏa Quyền",
+                            "description":  "Sabo phóng nắm đấm lửa khổng lồ quét qua hàng ngang kẻ địch gây 110% MAG sát thương và có 70% tỷ lệ gây hiệu ứng Burn (gây 30% MAG sát thương mỗi lượt) trong 2 lượt."
+                        },
+                 "s2":  {
+                            "title":  "Dragon\u0027s Breath - Hơi Thở Của Rồng",
+                            "description":  "Sabo cắm hai bàn tay xuống mặt đất, kích nổ lõi chấn động từ bên trong gây 120% MAG sát thương lên toàn bộ kẻ địch. Nếu mục tiêu đang chịu hiệu ứng Burn, sát thương của kỹ năng tăng thêm 20%."
+                        },
+                 "ult":  {
+                             "title":  "Flaming Dragon King - Hỏa Long Vương",
+                             "description":  "Sabo kết hợp Long Trảo Quyền và năng lực Mera Mera no Mi, tạo ra cột xoáy lửa thiêu rụi toàn bộ kẻ địch gây 240% MAG sát thương, áp đặt Burn (gây 30% MAG sát thương mỗi lượt) và giảm 15% DEF của mục tiêu trong 2 lượt."
+                         }
+             },
+    "jinbei":  {
+                   "passive":  {
+                                   "title":  "Helmsman\u0027s Resolve - Bản Lĩnh Người Lái Tàu",
+                                   "description":  "Khi bắt đầu trận, Jinbei nhận 15% Giảm Sát Thương. Mỗi khi đồng đội nhận đòn tấn công đơn mục tiêu, Jinbei kích hoạt Helmsman\u0027s Resolve (cơ chế hộ vệ riêng của Jinbei giúp chia sẻ gánh nặng sát thương cho đồng đội), gánh chịu 40% lượng sát thương thay cho đồng đội đó và hồi lại 4% HP tối đa của bản thân (tối đa 1 lần mỗi lượt)."
+                               },
+                   "basic":  {
+                                 "title":  "Five Thousand Tile True Punch – Ngũ Thiên Mai Ngõa Chính Quyền",
+                                 "description":  "Jinbei tung cú đấm sóng nước vào một mục tiêu gây 70% ATK sát thương và tạo Lá Chắn cho bản thân bằng 7% HP tối đa trong 1 lượt."
+                             },
+                   "s1":  {
+                              "title":  "Vagabond Drill - Lãng Nhân Khoan",
+                              "description":  "Jinbei dồn áp lực nước thành mũi khoan tấn công một mục tiêu gây 130% ATK sát thương, có 75% tỷ lệ gây hiệu ứng Taunt (Khiêu Khích) lên mục tiêu trong 1 lượt và tăng 15% DEF cho bản thân trong 2 lượt."
+                          },
+                   "s2":  {
+                              "title":  "Shark Brick Fist - Sa Ngõa Chính Quyền",
+                              "description":  "Jinbei đập mạnh xuống mặt đất tạo sóng thủy triều bảo vệ toàn đội, tạo Lá Chắn bằng 11% HP tối đa của Jinbei cho toàn bộ đồng đội trong 2 lượt và xóa 1 hiệu ứng bất lợi trên bản thân."
+                          },
+                   "ult":  {
+                               "title":  "Ocean Current Shoulder Throw - Hải Lưu Quá Vai Đao",
+                               "description":  "Jinbei điều khiển dòng hải lưu quật ngã toàn bộ kẻ địch gây 155% ATK sát thương (cộng thêm 10% HP tối đa của Jinbei), 50% làm choáng của kẻ địch trong 1 lượt (tối đa 2 mục tiêu) và hồi lại 15% HP tối đa cho bản thân."
+                           }
+               },
+    "ace":  {
+                "passive":  {
+                                "title":  "Logia Flame Body - Cơ Thể Lửa Nguyên Tố",
+                                "description":  "Ace miễn nhiễm với hiệu ứng Burn. Mỗi khi Ace sử dụng kỹ năng gây sát thương, anh nhận 1 tầng Flame Ember (Hỏa Tinh – trạng thái tích tụ hỏa lực riêng của Ace, tối đa 3 tầng và duy trì đến hết trận; mỗi tầng tăng 5% MAG và 4% Crit Rate)."
+                            },
+                "basic":  {
+                              "title":  "Higan – Hỏa Thương",
+                              "description":  "Ace chĩa hai ngón tay bắn liên tiếp các viên đạn lửa vào một mục tiêu gây 80% MAG sát thương và có 60% tỷ lệ gây hiệu ứng Burn (gây 30% MAG sát thương mỗi lượt) trong 2 lượt."
+                          },
+                "s1":  {
+                           "title":  "Hotarubi: Hidaruma - Huỳnh Hỏa: Hỏa Đạt Ma",
+                           "description":  "Ace bao vây một mục tiêu bằng đom đóm lửa rồi kích nổ đồng loạt gây 180% MAG sát thương, kèm 75% tỷ lệ gây Burn (gây 30% MAG sát thương mỗi lượt) trong 2 lượt."
+                       },
+                "s2":  {
+                           "title":  "Cross Fire - Thập Tự Hỏa",
+                           "description":  "Ace đan chéo hai ngón tay bắn ra tia lửa hình chữ thập vào hàng trước kẻ địch gây 130% MAG sát thương. Nếu mục tiêu đang chịu hiệu ứng Burn, đòn đánh bỏ qua 15% DEF và tăng 20% Crit Damage."
+                       },
+                "ult":  {
+                            "title":  "Great Flame Commandment: Flame Emperor - Đại Viêm Đế",
+                            "description":  "Ace hội tụ ngọn lửa tạo thành quả cầu mặt trời giáng xuống chiến trường, gây 320% MAG sát thương lên mục tiêu chính và 130% MAG sát thương lên các kẻ địch còn lại, đồng thời kích nổ ngay 1 lượt sát thương Burn hiện có trên mục tiêu chính."
+                        }
+            },
+    "kaido":  {
+                  "passive":  {
+                                  "title":  "Indestructible Dragon Scales - Long Lân Bất Hoại",
+                                  "description":  "Kaido giảm 12% sát thương nhận vào và nhận thêm 30% Kháng Hiệu Ứng. Mỗi khi chịu sát thương, Kaido nhận 1 tầng Drunken Dragon (Túy Long – trạng thái hưng phấn chiến đấu riêng của Kaido, tối đa 4 tầng và duy trì đến hết trận; mỗi tầng tăng 3% ATK và 3% DEF).\nKhi HP lần đầu giảm xuống dưới 30%, Kaido lập tức hồi 22% HP tối đa, xóa toàn bộ hiệu ứng bất lợi và nhận ngay 40 nộ (một lần mỗi trận)."
+                              },
+                  "basic":  {
+                                "title":  "Kanabo Smash – Chùy Lôi Đập Phá",
+                                "description":  "Kaido vung chùy sắt Haki giáng mạnh vào một mục tiêu gây 90% ATK sát thương (cộng thêm 4% HP tối đa của Kaido) và giảm 10% ATK của mục tiêu trong 1 lượt."
+                            },
+                  "s1":  {
+                             "title":  "Bolo Breath - Nhiệt Tức",
+                             "description":  "Kaido hóa dạng Rồng Xanh, phun luồng hỏa cầu quét qua toàn bộ kẻ địch gây 110% ATK sát thương và có 60% tỷ lệ gây hiệu ứng Burn (gây 30% ATK sát thương mỗi lượt) trong 2 lượt."
+                         },
+                  "s2":  {
+                             "title":  "Dragon Scales - Vảy Rồng Bất Diệt",
+                             "description":  "Kaido bọc vảy rồng toàn thân, tạo lượng giáp bằng 10% HP tối đa, khi lớp giáp bị vỡ liền thi triển một đòn đánh thường phản kích kèm 20% tỉ lệ gây Silience."
+                         },
+                  "ult":  {
+                              "title":  "Flame Dragon Torch - Hỏa Long Đại Cự",
+                              "description":  "Kaido hóa thành rồng khổng lồ, lao xuống nghiền nát toàn bộ kẻ địch gây 200% ATK sát thương (cộng thêm 10% HP tối đa của Kaido) và tạo Lá Chắn cho bản thân bằng 15% HP tối đa trong 2 lượt."
+                          }
+              },
+    "aokiji":  {
+                   "passive":  {
+                                   "title":  "Absolute Zero - Không Độ Tuyệt Đối",
+                                   "description":  "Aokiji miễn nhiễm với hiệu ứng Freeze. Mỗi đòn tấn công của Aokiji đều áp đặt 1 tầng Chill (Nhiễm Lạnh – hiệu ứng hàn khí tích lũy riêng của Aokiji tồn tại trong 2 lượt, tối đa 3 tầng; mỗi tầng giảm 5% Tốc độ và 3% ATK). Khi kẻ địch tích đủ 3 tầng Chill, lập tức chuyển hóa thành hiệu ứng Freeze (Đóng Băng) trong 1 lượt và xóa toàn bộ tầng Chill (mục tiêu vừa thoát Freeze sẽ miễn nhiễm Chill trong 1 lượt)."
+                               },
+                   "basic":  {
+                                 "title":  "Ice Saber – Băng Kiếm",
+                                 "description":  "Aokiji ngưng tụ thanh kiếm băng chém một mục tiêu gây 70% MAG sát thương và áp đặt 1 tầng Chill."
+                             },
+                   "s1":  {
+                              "title":  "Ice Block: Partisan - Băng Khối: Lưỡng Cức Mâu",
+                              "description":  "Aokiji phóng hàng loạt ngọn giáo băng đâm xuyên hàng trước kẻ địch gây 110% MAG sát thương, áp đặt 1 tầng Chill và có 70% tỷ lệ áp đặt thêm 1 tầng Chill nếu mục tiêu đã có sẵn hiệu ứng này."
+                          },
+                   "s2":  {
+                              "title":  "Ice Ball - Quả Cầu Băng Giá",
+                              "description":  "Aokiji đóng băng một mục tiêu trong khối băng lớn gây 180% MAG sát thương, có 20% áp đặt hiệu ứng Freeze, áp đặt thêm 1 tầng Chill kèm giảm 20% DEF."
+                          },
+                   "ult":  {
+                               "title":  "Ice Age - Kỷ Băng Hà",
+                               "description":  "Aokiji giải phóng chim trĩ xanh bao trùm toàn chiến trường gây 230% MAG sát thương lên toàn bộ kẻ địch ở hàng sau cùng, áp đặt 1 tầng Chill và có 80% tỷ lệ gây Freeze trực tiếp trong 1 lượt (chắc chắn Freeze nếu mục tiêu đã có từ 2 tầng Chill trở lên)"
+                           }
+               },
+    "enel":  {
+                 "passive":  {
+                                 "title":  "Mantra \u0026 Lightning Speed - Tâm Võng Lôi Tốc",
+                                 "description":  "Enel duy trì trạng thái Mantra (Tâm Võng – khả năng cảm nhận chuyển động riêng của Enel suốt trận đấu), nhận thêm 15% Tốc độ và 10% tỷ lệ né tránh. Khi tấn công mục tiêu đang chịu hiệu ứng Shock, Enel hồi 10 năng lượng (tối đa 1 lần mỗi lượt)."
+                             },
+                 "basic":  {
+                               "title":  "30 Million Volt: Hino – Lôi Điểu",
+                               "description":  "Enel phóng chim sét từ trống sau lưng vào một mục tiêu gây 75% MAG sát thương và có 50% tỷ lệ gây hiệu ứng Shock (chịu thêm 25% MAG sát thương mỗi khi hành động) trong 2 lượt."
+                           },
+                 "s1":  {
+                            "title":  "El Thor - Phán Quyết Của Chúa",
+                            "description":  "Enel triệu hồi cột sét từ bầu trời giáng thẳng xuống mục tiêu có HP thấp nhất gây 180% MAG sát thương (bỏ qua 15% DEF) và có 75% tỷ lệ gây hiệu ứng Shock trong 2 lượt."
+                        },
+                 "s2":  {
+                            "title":  "60 Million Volt: Jamboule - Lôi Long",
+                            "description":  "Enel phóng rồng sét càn quét toàn bộ kẻ địch gây 130% MAG sát thương. Nếu mục tiêu đang chịu hiệu ứng Shock, có 25% tỷ lệ gây hiệu ứng Paralyze (Tê Liệt) trong 1 lượt."
+                        },
+                 "ult":  {
+                             "title":  "200 Million Volt: Amaru - Lôi Thần Giáng Thế",
+                             "description":  "Enel hóa thân thành Lôi Thần, giải phóng sấm sét lên toàn bộ kẻ địch gây 205% MAG sát thương, áp đặt hiệu ứng Shock lên toàn đội hình địch trong 2 lượt và tăng 15% Crit Rate cho bản thân trong 2 lượt."
+                         }
+             },
+    "akainu":  {
+                   "passive":  {
+                                   "title":  "Absolute Justice - Công Lý Tuyệt Đối",
+                                   "description":  "Akainu miễn nhiễm với hiệu ứng Burn. Toàn bộ kỹ năng của Akainu đều áp đặt Magma Scorch (Dung Nham Thiêu Đốt – hiệu ứng thiêu đốt đặc thù riêng của Akainu tồn tại trong 2 lượt, không cộng dồn, gây 30% MAG sát thương mỗi đầu lượt, giảm 15% DEF và được tính như hiệu ứng Burn để kích hoạt các hiệu ứng cộng hưởng liên quan).\nKhi kẻ địch có HP dưới 12% chịu sát thương từ Akainu, lập tức kích hoạt kết liễu (gây thêm sát thương chuẩn bằng 12% HP tối đa của mục tiêu, không vượt quá 300% MAG của Akainu)."
+                               },
+                   "basic":  {
+                                 "title":  "Magma Fist – Dung Nham Quyền",
+                                 "description":  "Akainu hóa cánh tay thành dung nham đấm thẳng một mục tiêu gây 90% MAG sát thương và có 60% tỷ lệ áp đặt Magma Scorch."
+                             },
+                   "s1":  {
+                              "title":  "Inugami Guren - Khuyển Giảo Hồng Liên",
+                              "description":  "Akainu phóng luồng dung nham hình đầu chó cắn xé hàng trước kẻ địch gây 145% MAG sát thương và giảm 20% hiệu quả Lá Chắn của mục tiêu."
+                          },
+                   "s2":  {
+                              "title":  "Meigo - Minh Cẩu",
+                              "description":  "Akainu lao tới khuếch đại dung nham trên tay và tung cú đấm dung nham tập trung vào một mục tiêu gây 265% MAG sát thương (bỏ qua 25% DEF). Nếu mục tiêu đang chịu hiệu ứng Magma Scorch hoặc Burn, kỹ năng nhận thêm 25% Crit Rate và 25% Crit Damage."
+                          },
+                   "ult":  {
+                               "title":  "Ryusei Kazan - Lưu Tinh Hỏa Sơn",
+                               "description":  "Akainu phóng hàng loạt nắm đấm dung nham lên bầu trời rồi dội xuống chiến trường, gây 300% MAG sát thương lên toàn bộ kẻ địch, thiêu rụi mặt đất trong 2 lượt (mỗi đầu lượt kẻ địch chịu thêm 30% MAG sát thương) và xóa 1 lớp Lá Chắn trên mỗi kẻ địch."
+                           }
+               },
+    "doflamingo":  {
+                       "passive":  {
+                                       "title":  "String Puppeteer - Bậc Thầy Rối Tơ",
+                                       "description":  "Mỗi khi kẻ địch chịu sát thương từ hiệu ứng Bleed hoặc mất lượt do khống chế, Doflamingo nhận 1 tầng Awakening Thread (Tơ Thức Tỉnh – trạng thái cường hóa tơ riêng của Doflamingo, tối đa 4 tầng và duy trì đến hết trận; mỗi tầng tăng 4% MAG và 4% Crit Damage)."
+                                   },
+                       "basic":  {
+                                     "title":  "Five Color Strings – Ngũ Sắc Tuyến",
+                                     "description":  "Doflamingo vung tay tạo năm sợi tơ sắc bén cào xé một mục tiêu gây 75% MAG sát thương và có 50% tỷ lệ gây hiệu ứng Bleed (mất 4% HP tối đa mỗi lượt, không vượt quá 60% MAG của Doflamingo) trong 2 lượt."
+                                 },
+                       "s1":  {
+                                  "title":  "Parasite - Ký Sinh Tuyến",
+                                  "description":  "Doflamingo bắn sợi tơ điều khiển một mục tiêu gây 150% MAG sát thương và có 40% tỷ lệ gây hiệu ứng Confusion (Hỗn Loạn) trong 1 lượt."
+                              },
+                       "s2":  {
+                                  "title":  "Overheat - Nhiệt Tuyến",
+                                  "description":  "Doflamingo quất sợi roi tơ nung đỏ xuyên qua hàng ngang kẻ địch gây 120% MAG sát thương kèm 60% tỷ lệ gây hiệu ứng Bleed (mất 4% HP tối đa, tối đa 60% MAG) trong 2 lượt. Nếu mục tiêu đang chịu hiệu ứng Bleed, sát thương của kỹ năng tăng thêm 20%."
+                              },
+                       "ult":  {
+                                   "title":  "Divine String Execution – Thần Tuyến Tuyệt Sát",
+                                   "description":  "Doflamingo thức tỉnh năng lực tạo một lồng tơ khổng lồ bao phủ toàn bộ kẻ địch, những sợi tơ sắc bén đâm xuyên từng kẻ địch 3 lần, mỗi lần gây 70% MAG sát thương (Tổng 210% MAG lên mỗi mục tiêu, bỏ qua 20% DEF) và chắc chắn gây Bleed."
+                               }
+                   },
+    "garp":  {
+                 "passive":  {
+                                 "title":  "Fist of Love \u0026 Iron - Thiết Quyền Anh Hùng",
+                                 "description":  "Toàn bộ đòn tấn công của Garp bỏ qua 20% DEF của mục tiêu và gây thêm 20% sát thương lên mục tiêu đang có Lá Chắn. Mỗi khi Garp hạ gục kẻ địch hoặc phá vỡ Lá Chắn, ông kích hoạt cộng dồn Heroic Haki (trạng thái cường hóa Haki thuần túy riêng của Garp duy trì đến hết trận, tối đa 3 tầng), lập tức hồi 20 nộ và tăng 12% Crit Damage  mỗi tầng."
+                             },
+                 "basic":  {
+                               "title":  "Iron Fist Smash – Thiết Quyền Haki",
+                               "description":  "Garp tung cú đấm bọc Haki Vũ Trang thuần túy vào một mục tiêu gây 95% ATK sát thương và giảm 12% DEF của mục tiêu trong 2 lượt."
+                           },
+                 "s1":  {
+                            "title":  "Meteor Fist Shower - Quyền Thiên Thạch",
+                            "description":  "Garp ném liên tiếp những quả đạn pháo bằng tay không vào hàng ngang kẻ địch gây 155% ATK sát thương và xóa 1 hiệu ứng có lợi của mỗi mục tiêu."
+                        },
+                 "s2":  {
+                            "title":  "Blue Hole - Hố Xanh Hủy Diệt",
+                            "description":  "Garp tóm lấy một mục tiêu và ném thẳng xuống lòng đất với lực Haki mạnh mẽ gây 285% ATK sát thương, có 65% tỷ lệ gây hiệu ứng Stun (Choáng) trong 1 lượt và khiến mục tiêu chịu thêm 15% sát thương từ mọi nguồn trong 2 lượt."
+                        },
+                 "ult":  {
+                             "title":  "Galaxy Impact - Xung Kích Ngân Hà",
+                             "description":  "Garp nhảy vọt lên không trung, hội tụ Haki Bá Vương và Haki Vũ Trang thành quả cầu năng lượng giáng xuống chiến trường, gây 420% ATK sát thương lên mục tiêu chính (bỏ qua 30% DEF và chắc chắn chí mạng) và gây 150% ATK sát thương lan lên toàn bộ kẻ địch còn lại."
+                         }
+             },
+    "jozu":  {
+                 "passive":  {
+                                 "title":  "Brilliant Punk Wall - Kim Cương Bất Hoại",
+                                 "description":  "Jozu nhận thêm 18% DEF cơ bản. Mỗi khi chịu đòn tấn công trực tiếp, Jozu nhận 1 tầng Diamond Facet (Giáp Kim Cương – trạng thái cường hóa phòng ngự riêng của Jozu duy trì đến hết trận, tối đa 4 tầng; mỗi tầng tăng 4% DEF và phản lại 12% sát thương nhận vào cho kẻ tấn công, lượng sát thương phản lại không vượt quá 80% DEF của Jozu)."
+                             },
+                 "basic":  {
+                               "title":  "Diamond Punch – Quyền Kim Cương",
+                               "description":  "Jozu hóa cứng cánh tay thành kim cương đấm thẳng một mục tiêu gây 70% ATK sát thương (cộng thêm 15% DEF của Jozu) và tăng 12% DEF cho bản thân trong 1 lượt."
+                           },
+                 "s1":  {
+                            "title":  "Brilliant Punk - Kim Cương Đột Kích",
+                            "description":  "Jozu lao tới húc văng một mục tiêu gây 125% ATK sát thương (cộng thêm 20% DEF của Jozu), có 75% tỷ lệ gây hiệu ứng Taunt (Khiêu Khích) lên mục tiêu trong 1 lượt."
+                        },
+                 "s2":  {
+                            "title":  "Diamond Bastion - Pháo Đài Kim Cương",
+                            "description":  "Jozu dựng kết giới kim cương bảo vệ bản thân và đồng đội có HP thấp nhất, tạo Lá Chắn bằng 16% HP tối đa của Jozu trong 2 lượt và tăng 15% DEF cho cả hai mục tiêu trong 2 lượt."
+                        },
+                 "ult":  {
+                             "title":  "Glacier Toss - Ném Tảng Băng Khổng Lồ",
+                             "description":  "Jozu nhấc bổng khối băng khổng lồ ném thẳng xuống đội hình địch gây 165% ATK sát thương (cộng thêm 25% DEF của Jozu) lên toàn bộ kẻ địch, giảm 15% Crit Rate và 15% ATK của kẻ địch trong 2 lượt."
+                         }
+             },
+    "rayleigh":  {
+                     "passive":  {
+                                     "title":  "Dark King\u0027s Haki - Bá Vương Haki",
+                                     "description":  "Rayleigh nhận thêm 12% Crit Rate và 15% Chính xác. Toàn bộ đòn tấn công của ông bỏ qua 15% DEF của mục tiêu. Mỗi khi Rayleigh sử dụng Skill 1 hoặc Skill 2, ông tích lũy 1 tầng Haki Mastery (Tinh Thông Haki – trạng thái cường hóa riêng của Rayleigh, tối đa 3 tầng và duy trì đến hết trận; mỗi tầng tăng 5% ATK và 4% Crit Rate)."
+                                 },
+                     "basic":  {
+                                   "title":  "Sword of the Dark King - Kiếm Trảm Vua Bóng Tối",
+                                   "description":  "Rayleigh rút kiếm trong nháy mắt, tung một nhát chém bọc Haki vào một mục tiêu gây 90% ATK sát thương và tăng 10% Crit Damage cho bản thân trong 1 lượt."
+                               },
+                     "s1":  {
+                                "title":  "Advanced Armament Haki - Haki Vũ Trang Cao Cấp",
+                                "description":  "Rayleigh truyền Haki Vũ Trang cao cấp xuyên qua cơ thể đối thủ, gây 205% ATK sát thương lên một mục tiêu, bỏ qua 25% DEF và giảm thêm 12% DEF của mục tiêu trong 2 lượt."
+                            },
+                     "s2":  {
+                                "title":  "Conqueror\u0027s Haki - Bá Vương Sắc",
+                                "description":  "Rayleigh giải phóng Haki Bá Vương thành một đợt sóng áp chế, gây 125% ATK sát thương lên hàng ngang kẻ địch. Mục tiêu có ATK cao nhất có 50% tỷ lệ chịu hiệu ứng Stun (Choáng) trong 1 lượt; các mục tiêu còn lại bị giảm 20% Chính xác trong 1 lượt."
+                            },
+                     "ult":  {
+                                 "title":  "Dark King: Haki Severance - Vua Bóng Tối: Haki Trảm",
+                                 "description":  "Rayleigh tập trung toàn bộ Haki vào lưỡi kiếm rồi tung nhát chém tối thượng vào một mục tiêu, gây 490% ATK sát thương (bỏ qua 30% DEF). Nếu mục tiêu còn dưới 40% HP, đòn đánh chắc chắn chí mạng. Nếu mục tiêu bị hạ gục, Rayleigh hồi ngay 30 nộ."
+                             }
+                 },
+    "kizaru":  {
+                   "passive":  {
+                                   "title":  "Speed is Weight - Tốc Độ Là Sức Mạnh",
+                                   "description":  "Kizaru nhận thêm 12% Tốc độ cơ bản. Kích hoạt cơ chế Speed is Weight (chuyển hóa tốc độ vượt trội riêng của Kizaru thành sức mạnh chí mạng): với mỗi 10 điểm Tốc độ cao hơn mục tiêu, Kizaru nhận thêm 4% Crit Rate và 8% Crit Damage (tối đa 20% Crit Rate và 40% Crit Damage)."
+                               },
+                   "basic":  {
+                                 "title":  "Laser Beam – Tia Laser Ánh Sáng",
+                                 "description":  "Kizaru bắn tia sáng từ đầu ngón tay vào một mục tiêu gây 85% ATK sát thương và giảm 12% Chính xác của mục tiêu trong 1 lượt."
+                             },
+                   "s1":  {
+                              "title":  "Yata no Kagami - Bát Chỉ Kính",
+                              "description":  "Kizaru phản chiếu ánh sáng dịch chuyển tức thời ra sau lưng kẻ địch có ATK cao nhất, tung cú đá tốc độ ánh sáng gây 195% ATK sát thương và làm giảm 20% Chính xác của mục tiêu trong 1 lượt."
+                          },
+                   "s2":  {
+                              "title":  "Ama no Murakumo - Thiên Tùng Vân Kiếm",
+                              "description":  "Kizaru ngưng tụ thanh kiếm ánh sáng tấn công một mục tiêu 2 lần, mỗi lần gây 105% ATK sát thương (Tổng 210% ATK). Đòn đánh thứ hai tăng thêm 35% Crit Rate nếu mục tiêu có HP dưới 50%."
+                          },
+                   "ult":  {
+                               "title":  "Yasakani no Magatama - Bát Xích Quỳnh Câu Ngọc",
+                               "description":  "Kizaru bay lên không trung và trút cơn mưa đạn ánh sáng xuống toàn bộ kẻ địch gây 230% ATK sát thương (bỏ qua 20% DEF), đồng thời gây thêm 120% ATK sát thương lên mục tiêu có HP thấp nhất bên địch."
+                           }
+               },
+    "law":  {
+                "passive":  {
+                                "title":  "ROOM: Spatial Sovereignty - Không Gian Phẫu Thuật",
+                                "description":  "Khi bắt đầu trận, Law triển khai kết giới ROOM (không gian phẫu thuật đặc thù riêng của Law duy trì suốt trận khi còn trên sân, giúp toàn đội nhận thêm 10% Kháng Hiệu Ứng và tăng 10% lượng hồi phục nhận vào). Mỗi khi đồng đội được giải trừ hiệu ứng bất lợi, đồng đội đó nhận ngay Lá Chắn bằng 45% MAG của Law trong 1 lượt (tối đa 1 lần mỗi lượt cho mỗi đồng đội)."
+                            },
+                "basic":  {
+                              "title":  "Scalpel – Dao Mổ Không Gian",
+                              "description":  "Law tung nhát chém phẫu thuật vào một mục tiêu gây 75% MAG sát thương và hồi HP cho đồng đội có tỷ lệ HP thấp nhất bằng 35% MAG."
+                          },
+                "s1":  {
+                           "title":  "Shambles - Hoán Đổi Không Gian",
+                           "description":  "Law hoán đổi vị trí và cân bằng sinh lực trong ROOM: xóa 1 hiệu ứng bất lợi trên 2 đồng đội có HP thấp nhất, hồi HP cho cả hai bằng 30% MAG và tăng 10% Tốc độ cho họ trong 1 lượt."
+                       },
+                "s2":  {
+                           "title":  "Injection Shot - Xạ Kích Phẫu Thuật",
+                           "description":  "Law dịch chuyển áp sát một mục tiêu gây 140% MAG sát thương (bỏ qua 20% DEF), giảm 20% hiệu quả hồi máu nhận vào của mục tiêu trong 2 lượt và hồi HP cho đồng đội có HP thấp nhất bằng 60% MAG."
+                       },
+                "ult":  {
+                            "title":  "Gamma Knife \u0026 Curtain - Dao Gamma Phẫu Thuật",
+                            "description":  "Law tạo lớp màng bảo hộ Antibacterial Curtain bao phủ toàn đội, hồi HP cho toàn bộ đồng đội bằng 175% MAG, tạo Lá Chắn bằng 60% MAG trong 2 lượt, đồng thời phóng lưỡi dao năng lượng đánh vào mục tiêu có HP thấp nhất bên địch gây 180% MAG sát thương."
+                        }
+            },
+    "sengoku":  {
+                    "passive":  {
+                                    "title":  "Golden Buddha Form - Đại Phật Kim Thân",
+                                    "description":  "Khi bắt đầu trận, Sengoku nhận 15% Giảm Sát Thương và kích hoạt hào quang Fleet Command (Chỉ Huy Hạm Đội – trạng thái chỉ huy riêng của Sengoku duy trì suốt trận khi ông còn trên sân, tăng 10% DEF và 15% Kháng Hiệu Ứng cho toàn đội).\nKhi HP của Sengoku lần đầu giảm xuống dưới 35%, ông lập tức hóa thân Đại Phật hoàn toàn, tạo Lá Chắn cho bản thân bằng 40% HP tối đa trong 2 lượt và xóa toàn bộ hiệu ứng bất lợi trên bản thân (tối đa một lần mỗi trận)."
+                                },
+                    "basic":  {
+                                  "title":  "Palm Thrust – Phật Chưởng Xung Kích",
+                                  "description":  "Sengoku tung chưởng lực Haki vào một mục tiêu gây 75% ATK sát thương (cộng thêm 4% HP tối đa của Sengoku) và giảm 10% ATK của mục tiêu trong 1 lượt."
+                              },
+                    "s1":  {
+                               "title":  "Golden Guard - Kim Cang Hộ Thể",
+                               "description":  "Sengoku tỏa ánh hào quang vàng che chở hàng trước đồng đội, tạo Lá Chắn bằng 12% HP tối đa của Sengoku trong 2 lượt và tăng 15% DEF cho bản thân trong 1 lượt."
+                           },
+                    "s2":  {
+                               "title":  "Buddha\u0027s Judgment - Phán Quyết Đại Phật",
+                               "description":  "Sengoku đập mạnh hai lòng bàn tay tạo sóng xung kích đánh vào hàng trước kẻ địch gây 140% ATK sát thương (cộng thêm 6% HP tối đa của Sengoku), xóa 1 hiệu ứng có lợi trên mỗi mục tiêu và có 50% tỷ lệ gây hiệu ứng Silence (Câm Lặng) trong 1 lượt."
+                           },
+                    "ult":  {
+                                "title":  "Infinite Shockwave - Sóng Xung Kích Vô Tận",
+                                "description":  "Sengoku dồn toàn lực phóng chưởng sóng xung kích khổng lồ quét qua toàn bộ kẻ địch gây 210% ATK sát thương (cộng thêm 10% HP tối đa của Sengoku), có 40% tỷ lệ gây hiệu ứng Stun (Choáng) trong 1 lượt và hồi phục 15% HP tối đa cho bản thân."
+                            }
+                },
+    "whitebeard":  {
+                       "passive":  {
+                                       "title":  "Strongest Man in the World - Người Đàn Ông Mạnh Nhất Thế Giới",
+                                       "description":  "Whitebeard nhận thêm 15% HP tối đa và tăng 20% DEF. Khi HP của Whitebeard giảm xuống các mốc 70% và 35%, ông kích hoạt Quake Counter (sóng chấn động phản kích riêng của Whitebeard), gây 40% ATK sát thương lên toàn bộ kẻ địch và tăng 10% ATK cho bản thân đến hết trận (tối đa 2 tầng).\nKhi nhận đòn đánh kết liễu, Whitebeard kích hoạt trạng thái Bất Khuất (giữ lại 1 HP và nhận ngay một lớp Lá Chắn bằng 20% HP tối đa trong 1 lượt, tối đa một lần mỗi trận đồng thời tạo tăng cho toàn đội 20 năng lượng)."
+                                   },
+                       "basic":  {
+                                     "title":  "Murakumogiri Slash – Đại Đao Chấn Động",
+                                     "description":  "Whitebeard vung thanh đại đao Murakumogiri bọc chấn động chém một mục tiêu gây 90% ATK sát thương và lan 30% sát thương sang các kẻ địch đứng cạnh."
+                                 },
+                       "s1":  {
+                                  "title":  "Gekishin - Kích Chấn",
+                                  "description":  "Whitebeard nắm lấy không khí và bẻ gãy không gian, gây 145% ATK sát thương lên toàn bộ kẻ địch (bỏ qua 20% DEF) và có 25% tỷ lệ gây hiệu ứng Stun (Choáng) trong 1 lượt."
+                              },
+                       "s2":  {
+                                  "title":  "Kabutowari - Phá Giáp Chấn",
+                                  "description":  "Whitebeard tụ quả cầu chấn động lên đầu đại đao giáng thẳng xuống một mục tiêu gây 200% ATK sát thương, phá hủy Lá Chắn của mục tiêu và giảm 20% DEF trong 2 lượt."
+                              },
+                       "ult":  {
+                                   "title":  "Seaquake - Hải Chấn Diệt Thế",
+                                   "description":  "Whitebeard chống thanh đại đao xuống đất, 2 tay tụ lực chấn động và phá hủy không gian gây 280% ATK sát thương (tăng 3% sát thương mỗi % HP đã mất của Whitebeard) và giảm toàn bộ kẻ địch 20 năng lượng."
+                               }
+                   },
+    "shirahoshi":  {
+                       "passive":  {
+                                       "title":  "Voice of Poseidon - Tiếng Gọi Hải Vương",
+                                       "description":  "Tăng 15% hiệu quả hồi phục của bản thân. Mỗi khi Shirahoshi hoặc đồng đội chịu sát thương chí mạng (Crit), Shirahoshi tích lũy 1 tầng Sea King\u0027s Oath (Lời Thề Hải Vương – trạng thái cộng hưởng bảo hộ riêng của Shirahoshi, tối đa 3 tầng; khi đạt đủ 3 tầng, tự động tiêu hao toàn bộ để hồi 55% MAG HP cho toàn đội và hồi 10 năng lượng cho bản thân, tối đa 1 lần mỗi lượt)."
+                                   },
+                       "basic":  {
+                                     "title":  "Tidal Blessing – Phước Lành Thủy Triều",
+                                     "description":  "Shirahoshi triệu hồi dòng nước ấm xoa dịu đồng đội, hồi HP cho 2 đồng đội có HP thấp nhất một lượng bằng 45% MAG và xóa 1 hiệu ứng bất lợi trên đồng đội có HP thấp nhất."
+                                 },
+                       "s1":  {
+                                  "title":  "Ocean\u0027s Embrace - Vòng Tay Đại Dương",
+                                  "description":  "Shirahoshi ban phước lành đại dương cho toàn đội, hồi HP cho toàn bộ đồng đội bằng 90% MAG và ban hiệu ứng Hồi Phục Liên Tục (hồi 30% MAG mỗi đầu lượt) trong 2 lượt."
+                              },
+                       "s2":  {
+                                  "title":  "Sea King\u0027s Roar - Tiếng Gầm Hải Vương",
+                                  "description":  "Shirahoshi vô thức triệu hồi các Vua Biển khổng lồ trồi lên bảo vệ đội hình, tạo Lá Chắn cho toàn đội bằng 75% MAG trong 2 lượt và giảm 10% ATK của toàn bộ kẻ địch trong 1 lượt."
+                              },
+                       "ult":  {
+                                   "title":  "Awakening of Poseidon - Thức Tỉnh Hải Thần",
+                                   "description":  "Shirahoshi giải phóng toàn bộ sức mạnh cổ đại, hồi HP cho toàn bộ đồng đội bằng 215% MAG, xóa 1 hiệu ứng bất lợi trên mỗi đồng đội và tăng 15% DEF cùng 15% Kháng Hiệu Ứng cho toàn đội trong 2 lượt."
+                               }
+                   },
+    "magellan":  {
+                     "passive":  {
+                                     "title":  "Poisonous Body - Thân Thể Kịch Độc",
+                                     "description":  "Magellan miễn nhiễm với hiệu ứng Poison và nhận thêm 12% MAG. Mỗi khi sát thương Poison do Magellan gây ra kích hoạt, ông tích lũy 1 tầng Venom Core (Lõi Kịch Độc – trạng thái cường hóa độc tố riêng của Magellan, tối đa 4 tầng và duy trì đến hết trận; mỗi tầng tăng 8% sát thương Poison). Hiệu ứng tích tầng kích hoạt tối đa 2 lần mỗi lượt."
+                                 },
+                     "basic":  {
+                                   "title":  "Hydra - Bạch Xà Độc Long",
+                                   "description":  "Magellan phóng một đầu rắn độc từ cánh tay, tấn công một mục tiêu gây 75% MAG sát thương và có 50% tỷ lệ gây hiệu ứng Poison (mất 4% HP tối đa mỗi lượt, không vượt quá 60% MAG của Magellan) trong 2 lượt."
+                               },
+                     "s1":  {
+                                "title":  "Venom Road - Độc Lộ",
+                                "description":  "Magellan biến mặt đất thành dòng độc dịch lan rộng, gây 115% MAG sát thương lên toàn bộ kẻ địch ở hàng trước và có 70% tỷ lệ gây Poison (mất 4% HP tối đa, tối đa 60% MAG của Magellan mỗi lượt) trong 2 lượt."
+                            },
+                     "s2":  {
+                                "title":  "Chloro Ball - Cầu Độc Ngạt",
+                                "description":  "Magellan ném một khối độc cầu đặc quánh vào mục tiêu có nhiều tầng Poison nhất, gây 190% MAG sát thương. Nếu mục tiêu đang chịu Poison, có 55% tỷ lệ gây hiệu ứng Stun (Choáng) trong 1 lượt và giảm 15% hiệu quả hồi máu nhận vào trong 2 lượt."
+                            },
+                     "ult":  {
+                                 "title":  "Venom Demon: Hydra\u0027s Wrath - Độc Nhân Quỷ: Bạch Xà Diệt Thế",
+                                 "description":  "Magellan hóa thân thành Venom Demon, giải phóng biển độc bao phủ toàn bộ chiến trường gây 215% MAG sát thương lên tất cả kẻ địch và chắc chắn áp đặt Poison (mất 4% HP tối đa, tối đa 60% MAG của Magellan mỗi lượt) trong 2 lượt. Đồng thời giảm 40% hiệu quả hồi máu nhận vào của toàn bộ kẻ địch trong 2 lượt."
+                             }
+                 },
+    "kuma":  {
+                 "passive":  {
+                                 "title":  "Paw-Paw Repulsion - Đệm Thịt Phản Xạ",
+                                 "description":  "Khi bắt đầu trận và sau mỗi 2 lượt, Kuma nhận 1 lớp Paw Pad (Đệm Bàn Tay – trạng thái hộ thể đặc thù riêng của Kuma, tối đa 1 lớp; tự động triệt tiêu 50% sát thương của đòn đánh trực tiếp tiếp theo nhắm vào Kuma và lưu trữ lượng sát thương đã triệt tiêu vào cơ chế Pain Bubble, tối đa lưu trữ bằng 25% HP tối đa của Kuma)."
+                             },
+                 "basic":  {
+                               "title":  "Pad Cannon – Pháo Áp Suất",
+                               "description":  "Kuma đẩy không khí với tốc độ cao bắn vào một mục tiêu gây 75% ATK sát thương và giảm 12% Tốc độ của mục tiêu trong 1 lượt."
+                           },
+                 "s1":  {
+                            "title":  "Tsuppari Pad Cannon - Liên Hoàn Pháo Đệm",
+                            "description":  "Kuma phóng liên tiếp sóng xung kích vào hàng trước kẻ địch gây 110% ATK sát thương, có 40% tỷ lệ đẩy lùi nhịp hành động khiến mục tiêu giảm 10% Tốc độ trong 2 lượt và tạo Lá Chắn cho bản thân bằng 9% HP tối đa trong 1 lượt."
+                        },
+                 "s2":  {
+                            "title":  "Pain Extraction - Tách Rời Đau Đớn",
+                            "description":  "Kuma chạm tay vào đồng đội có HP thấp nhất, xóa tối đa 2 hiệu ứng bất lợi trên mục tiêu đó, hồi phục cho họ lượng HP bằng 10% HP tối đa của Kuma và chuyển 30% lượng HP hồi phục thành giá trị tích trữ cho Pain Bubble."
+                        },
+                 "ult":  {
+                             "title":  "Ursus Shock - Hùng Chưởng Chấn Động",
+                             "description":  "Kuma nén không khí thành quả cầu hình bàn chân gấu khổng lồ rồi kích nổ giữa chiến trường, gây 165% ATK sát thương lên toàn bộ kẻ địch, giải phóng toàn bộ giá trị Pain Bubble đang tích trữ dưới dạng sát thương cộng thêm chia đều lên kẻ địch và có 30% tỷ lệ gây hiệu ứng Stun (Choáng) trong 1 lượt."
+                         }
+             },
+    "teach":  {
+                  "passive":  {
+                                  "title":  "Yami Yami no Mi - Hắc Ám Thôn Phệ",
+                                  "description":  "Teach nhận thêm 12% MAG và 10% Kháng Hiệu Ứng. Mỗi khi có một kẻ địch tử trận, Teach nhận 1 tầng Darkness Core (Hắc Ám Tâm – trạng thái cường hóa riêng của Teach, tối đa 3 tầng và duy trì đến hết trận; hấp thụ 15% MAG của kẻ địch đó). "
+                              },
+                  "basic":  {
+                                "title":  "Black Vortex - Hố Đen Xoáy",
+                                "description":  "Teach kéo bóng tối tụ lại trong lòng bàn tay rồi bắn thẳng vào một mục tiêu, gây 80% MAG sát thương và có 20% vô hiệu hóa hồi phục cho mục tiêu đó trong 1 lượt."
+                            },
+                  "s1":  {
+                             "title":  "Kurouzu - Hắc Thủy Dẫn Lực",
+                             "description":  "Teach dùng bóng tối hút mạnh một mục tiêu về phía mình, gây 165% MAG sát thương, xóa 1 hiệu ứng có lợi và có 45% tỷ lệ gây hiệu ứng Silence (Câm Lặng) trong 1 lượt."
+                         },
+                  "s2":  {
+                             "title":  "Black Hole - Hố Đen Nuốt Chửng",
+                             "description":  "Teach tạo hố đen nuốt chửng khu vực chiến trường, gây 130% MAG sát thương lên toàn bộ kẻ địch và làm suy yếu lớp Lá Chắn của chúng, giảm 20% giá trị Lá Chắn trong 2 lượt. Kẻ địch đang có Lá Chắn phải chịu thêm 20% sát thương từ kỹ năng này."
+                         },
+                  "ult":  {
+                              "title":  "Gura Gura no Mi: Shima Yurashi - Chấn Động: Rung Chuyển Đảo",
+                              "description":  "Teach kết hợp sức mạnh bóng tối và chấn động, tung cú đấm làm rung chuyển toàn bộ chiến trường gây 250% MAG sát thương lên tất cả kẻ địch và xóa 1 hiệu ứng có lợi trên mỗi mục tiêu. Đồng thời hấp thụ 2 đòn đánh kế tiếp của mục tiêu (không có tác dụng với ultimate), phản lại 30% sát thương cho chính người ra đòn đó."
+                          }
+              }
+}

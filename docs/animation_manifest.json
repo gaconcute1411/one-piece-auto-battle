@@ -1,0 +1,289 @@
+{
+  "project": "2d-battle-onepiece-animated",
+  "original_project": "2d-battle-onepiece.zip (user uploaded)",
+  "all_clips": {
+    "battle_loop": 6,
+    "s1": 6,
+    "s2": 6,
+    "ult": 12
+  },
+  "textures": {
+    "canvas": [
+      768,
+      576
+    ],
+    "pivot": [
+      312,
+      500
+    ],
+    "note": "Each character has one constant runtime scale based on body calibration; never scale per attack frame."
+  },
+  "characters": {
+    "zoro": {
+      "source": "Zoro_Animation_Lab_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        384,
+        453
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.993,
+      "source_first_size": [
+        768,
+        512
+      ],
+      "body_px_calibration": 255.0,
+      "min_alpha_margins": [
+        30,
+        181,
+        189,
+        73
+      ]
+    },
+    "sabo": {
+      "source": "Sabo_Animation_Lab_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        256,
+        328
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 1.5938,
+      "source_first_size": [
+        512,
+        384
+      ],
+      "body_px_calibration": 177.0,
+      "min_alpha_margins": [
+        151,
+        220,
+        236,
+        25
+      ]
+    },
+    "reiju": {
+      "source": "Reiju_Animation_Lab_Fixed_Size_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        620,
+        1050
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.5543,
+      "source_first_size": [
+        1920,
+        1280
+      ],
+      "body_px_calibration": 373.0,
+      "min_alpha_margins": [
+        50,
+        25,
+        91,
+        73
+      ]
+    },
+    "shanks": {
+      "source": "Shanks_Animation_Lab_Fixed_Ult_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        410,
+        675
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.7612,
+      "source_first_size": [
+        1024,
+        768
+      ],
+      "body_px_calibration": 280.0,
+      "min_alpha_margins": [
+        43,
+        25,
+        202,
+        60
+      ]
+    },
+    "jinbei": {
+      "source": "Jinbei_Animation_Lab_Fixed_Size_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        650,
+        1050
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.5508,
+      "source_first_size": [
+        1920,
+        1280
+      ],
+      "body_px_calibration": 181.0,
+      "min_alpha_margins": [
+        30,
+        47,
+        44,
+        70
+      ]
+    },
+    "kaido": {
+      "source": "Kaido_Animation_Lab_Godot4_FixedUlt",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        310,
+        560
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.9559,
+      "source_first_size": [
+        896,
+        640
+      ],
+      "body_px_calibration": 340.0,
+      "min_alpha_margins": [
+        30,
+        38,
+        191,
+        45
+      ]
+    },
+    "chopper": {
+      "source": "Chopper_Animation_Lab_Fixed_Size_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        720,
+        960
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.5301,
+      "source_first_size": [
+        1536,
+        1152
+      ],
+      "body_px_calibration": 145.0,
+      "min_alpha_margins": [
+        30,
+        110,
+        223,
+        40
+      ]
+    },
+    "ace": {
+      "source": "Ace_Animation_Lab_Fixed_Size_Godot4",
+      "clips": {
+        "battle_loop": 6,
+        "s1": 6,
+        "s2": 6,
+        "ult": 12
+      },
+      "input_pivot": [
+        480,
+        1010
+      ],
+      "canvas": [
+        768,
+        576
+      ],
+      "output_pivot": [
+        312,
+        500
+      ],
+      "normalization_factor": 0.5119,
+      "source_first_size": [
+        1600,
+        1200
+      ],
+      "body_px_calibration": 242.0,
+      "min_alpha_margins": [
+        110,
+        25,
+        35,
+        31
+      ]
+    }
+  },
+  "total_frames": 240,
+  "test_status": "resource inspection and static checks only; Godot runtime validation pending"
+}

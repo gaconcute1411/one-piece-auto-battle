@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+tools/reports/
+
+
+# Older nested copy of this project
+/2d-battle-onepiece-animated/
+
+# OS/editor artifacts
+.DS_Store
+Thumbs.db
+

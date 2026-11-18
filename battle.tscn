@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c4ywdfictyk4v"]
+
+[ext_resource type="Script" uid="uid://dxbv4bbfy5agb" path="res://battle.gd" id="1_ip7xm"]
+[ext_resource type="Texture2D" uid="uid://c3q5g557xy5uu" path="res://background.jpg" id="2_oxp8w"]
+
+[node name="Battle" type="Node2D" unique_id=1446117390]
+script = ExtResource("1_ip7xm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=103839237]
+z_index = -10
+position = Vector2(606, 233)
+scale = Vector2(0.57552093, 0.65185183)
+texture = ExtResource("2_oxp8w")
