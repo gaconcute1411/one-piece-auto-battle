@@ -36,6 +36,12 @@ const DEFAULT_CANVAS := Vector2(768, 576)
 ## (scale: nhân thêm vào tỉ lệ hiển thị, 1.0 = giữ nguyên; dùng để thử nhanh bằng ảnh cũ phóng to)
 ## Bỏ dấu # ở dòng mẫu để bật:
 const CLIP_LAYOUT := {
+	# Zoro attack sheets use different fixed cell sizes; these pivots keep the feet anchored.
+	"zoro": {
+		"s1": {"canvas": Vector2(362, 362), "pivot": Vector2(181, 325), "scale": 1.75},
+		"s2": {"canvas": Vector2(512, 512), "pivot": Vector2(256, 430), "scale": 1.30},
+		"ult": {"canvas": Vector2(544, 384), "pivot": Vector2(272, 355), "scale": 1.95},
+	},
 	# "kaido": {"ult": {"canvas": Vector2(1536, 1152), "pivot": Vector2(560, 1000), "scale": 1.0}},
 }
 

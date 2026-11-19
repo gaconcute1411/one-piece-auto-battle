@@ -11,12 +11,16 @@ const SCENE_TITLE := "res://scenes/title_screen.tscn"
 const SCENE_LOBBY := "res://scenes/lobby.tscn"
 const SCENE_GACHA := "res://scenes/gacha.tscn"
 const SCENE_ROSTER := "res://scenes/roster.tscn"
+const SCENE_FORMATION := "res://scenes/formation.tscn"
 const SCENE_LOGIN := "res://scenes/login_rewards.tscn"
 const SCENE_ACTIVITIES := "res://scenes/activities.tscn"
 const SCENE_EVENTS := "res://scenes/events.tscn"
 const SCENE_TRAINING := "res://scenes/training.tscn"
 const SCENE_CHARACTER := "res://scenes/character_detail.tscn"
 const SCENE_PETS := "res://scenes/pets.tscn"
+const SCENE_EQUIPMENT := "res://scenes/equipment.tscn"
+const SCENE_SHOP := "res://scenes/shop.tscn"
+const SCENE_SUPPORT_FORMATION := "res://scenes/support_formation.tscn"
 const SCENE_BATTLE := "res://battle.tscn"
 
 # ---- Bậc nhân vật: thứ tự từ cao xuống thấp ----
@@ -77,11 +81,24 @@ const TREASURES := {
 }
 const GEM_LEVELS := 10
 const GEMS := {
-	"hp": {"name": "Ngọc Sinh Lực", "stat": "hp", "per_level": 250},
-	"atk": {"name": "Ngọc Công Kích", "stat": "atk", "per_level": 24},
-	"mag": {"name": "Ngọc Phép Thuật", "stat": "mag", "per_level": 24},
-	"def": {"name": "Ngọc Phòng Thủ", "stat": "def", "per_level": 18},
+	"atk_crystal": {"name": "Ngọc ATK Pha Lê", "stat": "atk", "mode": "flat", "per_level": 25, "color": "ff9a32", "shape": "◆", "label": "ATK + cố định"},
+	"atk_hex": {"name": "Ngọc ATK Lục Giác", "stat": "atk", "mode": "percent", "per_level": 0.012, "color": "ff9a32", "shape": "⬡", "label": "ATK +%"},
+	"mag_crystal": {"name": "Ngọc MAG Pha Lê", "stat": "mag", "mode": "flat", "per_level": 25, "color": "b879ff", "shape": "◆", "label": "MAG + cố định"},
+	"mag_hex": {"name": "Ngọc MAG Lục Giác", "stat": "mag", "mode": "percent", "per_level": 0.012, "color": "b879ff", "shape": "⬡", "label": "MAG +%"},
+	"def_crystal": {"name": "Ngọc DEF Pha Lê", "stat": "def", "mode": "flat", "per_level": 18, "color": "59c978", "shape": "◆", "label": "DEF + cố định"},
+	"def_hex": {"name": "Ngọc DEF Lục Giác", "stat": "def", "mode": "percent", "per_level": 0.012, "color": "59c978", "shape": "⬡", "label": "DEF +%"},
+	"hp_crystal": {"name": "Ngọc HP Pha Lê", "stat": "hp", "mode": "flat", "per_level": 260, "color": "ef4d59", "shape": "◆", "label": "HP + cố định"},
+	"hp_hex": {"name": "Ngọc HP Lục Giác", "stat": "hp", "mode": "percent", "per_level": 0.012, "color": "ef4d59", "shape": "⬡", "label": "HP +%"},
+	"crit_crystal": {"name": "Ngọc Crit Rate Pha Lê", "stat": "crit", "mode": "flat", "per_level": 0.006, "color": "aeb8c3", "shape": "◆", "label": "Crit Rate + điểm %"},
+	"crit_hex": {"name": "Ngọc Crit Rate Lục Giác", "stat": "crit", "mode": "percent", "per_level": 0.04, "color": "aeb8c3", "shape": "⬡", "label": "Crit Rate +% tương đối"},
+	"crit_dmg_crystal": {"name": "Ngọc Crit Damage Pha Lê", "stat": "crit_dmg", "mode": "flat", "per_level": 0.03, "color": "373b42", "shape": "◆", "label": "Crit Damage + điểm %"},
+	"crit_dmg_hex": {"name": "Ngọc Crit Damage Lục Giác", "stat": "crit_dmg", "mode": "percent", "per_level": 0.03, "color": "373b42", "shape": "⬡", "label": "Crit Damage +% tương đối"},
 }
+const SUPPORT_SLOT_STATS := ["hp", "hp", "atk", "mag", "def", "def"]
+const SUPPORT_STAT_RATE := 0.05
+const SHOP_EQUIPMENT_PRICES := {"iron_blade": 450, "storm_staff": 450, "guardian_vest": 520, "captain_coat": 480, "ruby_charm": 420, "tide_charm": 480, "swift_boots": 400, "anchor_boots": 450}
+const SHOP_GEM_FLAT_PRICE := 120
+const SHOP_GEM_PERCENT_PRICE := 180
 const PET_MAX_LEVEL := 5
 const PET_UPGRADE_COST := {1: 120, 2: 220, 3: 360, 4: 550}
 const PETS := {

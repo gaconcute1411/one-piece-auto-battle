@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=32 format=3]
+[gd_resource type="SpriteFrames" load_steps=46 format=3]
 
 [ext_resource type="Texture2D" path="res://animations/zoro/idle_loop/f01.png" id="1_tex"]
 [ext_resource type="Texture2D" path="res://animations/zoro/idle_loop/f02.png" id="2_tex"]
@@ -13,24 +13,38 @@
 [ext_resource type="Texture2D" path="res://animations/zoro/s1/f04.png" id="11_tex"]
 [ext_resource type="Texture2D" path="res://animations/zoro/s1/f05.png" id="12_tex"]
 [ext_resource type="Texture2D" path="res://animations/zoro/s1/f06.png" id="13_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/s2/f01.png" id="14_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/s2/f02.png" id="15_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/s2/f03.png" id="16_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/s2/f04.png" id="17_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/s2/f05.png" id="18_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/s2/f06.png" id="19_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f01.png" id="20_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f02.png" id="21_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f03.png" id="22_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f04.png" id="23_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f05.png" id="24_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f06.png" id="25_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f07.png" id="26_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f08.png" id="27_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f09.png" id="28_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f10.png" id="29_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f11.png" id="30_tex"]
-[ext_resource type="Texture2D" path="res://animations/zoro/ult/f12.png" id="31_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s1/f07.png" id="14_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s1/f08.png" id="15_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s1/f09.png" id="16_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s1/f10.png" id="17_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s1/f11.png" id="18_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s1/f12.png" id="19_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s2/f01.png" id="20_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s2/f02.png" id="21_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s2/f03.png" id="22_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s2/f04.png" id="23_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s2/f05.png" id="24_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/s2/f06.png" id="25_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f01.png" id="26_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f02.png" id="27_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f03.png" id="28_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f04.png" id="29_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f05.png" id="30_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f06.png" id="31_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f07.png" id="32_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f08.png" id="33_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f09.png" id="34_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f10.png" id="35_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f11.png" id="36_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f12.png" id="37_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f13.png" id="38_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f14.png" id="39_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f15.png" id="40_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f16.png" id="41_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f17.png" id="42_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f18.png" id="43_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f19.png" id="44_tex"]
+[ext_resource type="Texture2D" path="res://animations/zoro/ult/f20.png" id="45_tex"]
 
 [resource]
 animations = [
@@ -69,14 +83,7 @@ animations = [
 {"duration": 1.0, "texture": ExtResource("10_tex")},
 {"duration": 1.0, "texture": ExtResource("11_tex")},
 {"duration": 1.0, "texture": ExtResource("12_tex")},
-{"duration": 1.0, "texture": ExtResource("13_tex")}
-],
-"loop": false,
-"name": &"s1",
-"speed": 10.0
-},
-{
-"frames": [
+{"duration": 1.0, "texture": ExtResource("13_tex")},
 {"duration": 1.0, "texture": ExtResource("14_tex")},
 {"duration": 1.0, "texture": ExtResource("15_tex")},
 {"duration": 1.0, "texture": ExtResource("16_tex")},
@@ -85,7 +92,7 @@ animations = [
 {"duration": 1.0, "texture": ExtResource("19_tex")}
 ],
 "loop": false,
-"name": &"s2",
+"name": &"s1",
 "speed": 10.0
 },
 {
@@ -95,13 +102,34 @@ animations = [
 {"duration": 1.0, "texture": ExtResource("22_tex")},
 {"duration": 1.0, "texture": ExtResource("23_tex")},
 {"duration": 1.0, "texture": ExtResource("24_tex")},
-{"duration": 1.0, "texture": ExtResource("25_tex")},
+{"duration": 1.0, "texture": ExtResource("25_tex")}
+],
+"loop": false,
+"name": &"s2",
+"speed": 10.0
+},
+{
+"frames": [
 {"duration": 1.0, "texture": ExtResource("26_tex")},
 {"duration": 1.0, "texture": ExtResource("27_tex")},
 {"duration": 1.0, "texture": ExtResource("28_tex")},
 {"duration": 1.0, "texture": ExtResource("29_tex")},
 {"duration": 1.0, "texture": ExtResource("30_tex")},
-{"duration": 1.0, "texture": ExtResource("31_tex")}
+{"duration": 1.0, "texture": ExtResource("31_tex")},
+{"duration": 1.0, "texture": ExtResource("32_tex")},
+{"duration": 1.0, "texture": ExtResource("33_tex")},
+{"duration": 1.0, "texture": ExtResource("34_tex")},
+{"duration": 1.0, "texture": ExtResource("35_tex")},
+{"duration": 1.0, "texture": ExtResource("36_tex")},
+{"duration": 1.0, "texture": ExtResource("37_tex")},
+{"duration": 1.0, "texture": ExtResource("38_tex")},
+{"duration": 1.0, "texture": ExtResource("39_tex")},
+{"duration": 1.0, "texture": ExtResource("40_tex")},
+{"duration": 1.0, "texture": ExtResource("41_tex")},
+{"duration": 1.0, "texture": ExtResource("42_tex")},
+{"duration": 1.0, "texture": ExtResource("43_tex")},
+{"duration": 1.0, "texture": ExtResource("44_tex")},
+{"duration": 1.0, "texture": ExtResource("45_tex")}
 ],
 "loop": false,
 "name": &"ult",

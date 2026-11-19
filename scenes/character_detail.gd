@@ -76,8 +76,16 @@ func _portrait_panel() -> Control:
 	var pet_button := UIKit.button("THÚ CƯNG ĐỘI", Color("7250a7"), 16, Vector2(270, 44))
 	pet_button.pressed.connect(func(): SceneManager.change_scene(GameData.SCENE_PETS))
 	col.add_child(pet_button)
+	var equipment_button := UIKit.button("KHO TRANG BỊ", Color("397b52"), 16, Vector2(270, 44))
+	equipment_button.pressed.connect(_open_equipment)
+	col.add_child(equipment_button)
 	_refresh_team_button()
 	return panel
+
+
+func _open_equipment() -> void:
+	GameState.selected_character = character_id
+	SceneManager.change_scene(GameData.SCENE_EQUIPMENT)
 
 
 func _refresh_team_button() -> void:
@@ -103,6 +111,8 @@ func _stats_panel() -> Control:
 	var bonus: Dictionary = GameState.character_flat_bonus(character_id)
 	var stars := GameState.stars_of(character_id)
 	var source_bonus: Dictionary = GameData.star_bonus(stars)
+	var percent_bonus: Dictionary = GameState.character_percent_bonus(character_id)
+	var support_bonus: Dictionary = GameState.support_team_bonus() if GameState.team.has(character_id) else {"hp": 0, "atk": 0, "mag": 0, "def": 0}
 	var gear_pet_bonus: Dictionary = {}
 	for stat in ["hp", "atk", "mag", "def"]:
 		gear_pet_bonus[stat] = int(bonus[stat]) - int(source_bonus[stat])
@@ -112,12 +122,20 @@ func _stats_panel() -> Control:
 		var col_stat := VBoxContainer.new()
 		col_stat.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		col_stat.add_child(UIKit.label(_stat_name(stat), 13, UIKit.MUTED_COLOR, HORIZONTAL_ALIGNMENT_CENTER))
-		col_stat.add_child(UIKit.label(_fmt(int(base[stat]) + int(bonus[stat])), 17, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER))
-		col_stat.add_child(UIKit.label("+%s trang bị/bảo vật/ngọc/pet" % _fmt(int(gear_pet_bonus[stat])), 11, Color("86d8bf"), HORIZONTAL_ALIGNMENT_CENTER))
+		var after_percent: int = int(round((float(base[stat]) + float(bonus[stat])) * (1.0 + float(percent_bonus[stat]))))
+		var final_value: int = after_percent + int(support_bonus[stat])
+		col_stat.add_child(UIKit.label(_fmt(final_value), 17, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER))
+		col_stat.add_child(UIKit.label("+%d cố định · +%.1f%%" % [int(gear_pet_bonus[stat]), float(percent_bonus[stat]) * 100.0], 11, Color("86d8bf"), HORIZONTAL_ALIGNMENT_CENTER))
+		if int(support_bonus[stat]) > 0:
+			col_stat.add_child(UIKit.label("+%d đội cổ vũ" % int(support_bonus[stat]), 10, Color("d4c1ff"), HORIZONTAL_ALIGNMENT_CENTER))
 		row.add_child(col_stat)
 	col.add_child(row)
 	var secondary: Dictionary = GameData.SECONDARY_STATS[character_id]
-	col.add_child(UIKit.label("Tốc độ %d   ·   Crit %.0f%% / %.0f%%   ·   Chính xác %.0f%%   ·   Né %.0f%%   ·   Kháng hiệu ứng %.0f%%" % [int(secondary["spd"]), float(secondary["crit"]) * 100.0, float(secondary.get("crit_dmg", 1.3)) * 100.0, float(secondary["accuracy"]) * 100.0, float(secondary["evasion"]) * 100.0, float(secondary["effect_res"]) * 100.0], 14, Color("e8d39c"), HORIZONTAL_ALIGNMENT_CENTER))
+	var gem_secondary: Dictionary = GameState.character_secondary_flat_bonus(character_id)
+	var gem_percent: Dictionary = GameState.character_percent_bonus(character_id)
+	var total_crit: float = (float(secondary["crit"]) * (1.0 + float(gem_percent["crit"]))) + float(gem_secondary["crit"])
+	var total_crit_dmg: float = (float(secondary["crit_dmg"]) * (1.0 + float(gem_percent["crit_dmg"]))) + float(gem_secondary["crit_dmg"])
+	col.add_child(UIKit.label("Tốc độ %d   ·   Crit %.1f%% / %.1f%%   ·   Chính xác %.0f%%   ·   Né %.0f%%   ·   Kháng hiệu ứng %.0f%%" % [int(secondary["spd"]), total_crit * 100.0, total_crit_dmg * 100.0, float(secondary["accuracy"]) * 100.0, float(secondary["evasion"]) * 100.0, float(secondary["effect_res"]) * 100.0], 14, Color("e8d39c"), HORIZONTAL_ALIGNMENT_CENTER))
 	var skill_names: Array = GameData.SKILL_NAMES.get(character_id, [])
 	if not skill_names.is_empty():
 		var skill_label := UIKit.label("Chiêu thức: %s" % " · ".join(skill_names), 12, UIKit.MUTED_COLOR)
@@ -229,9 +247,11 @@ func _equipment_panel() -> Control:
 		select.set_item_metadata(0, "")
 		select.select(0)
 		for item_id in GameData.equipment_ids_for_slot(slot):
+			if GameState.equipment_count(item_id) <= 0:
+				continue
 			options.append(item_id)
 			var item: Dictionary = GameData.EQUIPMENT[item_id]
-			select.add_item("%s  ·  %s" % [item["name"], _gear_summary(item["stats"])])
+			select.add_item("%s · túi %d · %s" % [item["name"], GameState.equipment_count(item_id), _gear_summary(item["stats"])])
 			select.set_item_metadata(select.item_count - 1, item_id)
 		var selected_id: String = String(equipped.get(slot, ""))
 		for i in range(select.item_count):
@@ -281,35 +301,51 @@ func _gem_panel() -> Control:
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 7)
 	panel.add_child(col)
-	col.add_child(UIKit.label("NGỌC · 10 CẤP", 20, Color("75e2c7")))
+	col.add_child(UIKit.label("NGỌC · 10 CẤP · 2 NHÓM CHỈ SỐ", 20, Color("75e2c7")))
+	var description := UIKit.label("Pha lê: cộng cố định. Lục giác: cộng theo phần trăm. Ghép 3 viên cùng loại cấp thấp thành 1 viên cấp kế tiếp.", 12, UIKit.MUTED_COLOR)
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	col.add_child(description)
 	var equipped: Dictionary = GameState.gems_equipped.get(character_id, {})
-	for gem_type in GameData.GEMS:
-		var data: Dictionary = GameData.GEMS[gem_type]
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 8)
-		var name_label := UIKit.label(String(data["name"]), 13, UIKit.MUTED_COLOR)
-		name_label.custom_minimum_size.x = 135
-		row.add_child(name_label)
-		var select := OptionButton.new()
-		select.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		select.add_item("Không trang bị")
-		select.set_item_metadata(0, 0)
-		var selected_level: int = int(equipped.get(gem_type, 0))
-		for level in range(1, GameData.GEM_LEVELS + 1):
-			select.add_item("Cấp %d · còn %d" % [level, GameState.gem_count(gem_type, level)])
-			select.set_item_metadata(select.item_count - 1, level)
-			if selected_level == level:
-				select.select(level)
-		select.item_selected.connect(_on_gem_selected.bind(character_id, gem_type, select))
-		row.add_child(select)
-		var low_level: int = maxi(1, selected_level)
-		if low_level >= GameData.GEM_LEVELS:
-			low_level = GameData.GEM_LEVELS - 1
-		var combine := UIKit.button("Ghép ×3 → %d" % (low_level + 1), Color("357f70"), 12, Vector2(118, 36))
-		combine.disabled = GameState.gem_count(gem_type, low_level) < 3 or low_level >= GameData.GEM_LEVELS
-		combine.pressed.connect(_combine_gem.bind(gem_type, low_level))
-		row.add_child(combine)
-		col.add_child(row)
+	for group_mode in ["flat", "percent"]:
+		var group_name := "NGỌC PHA LÊ · CHỈ SỐ CỐ ĐỊNH" if group_mode == "flat" else "NGỌC LỤC GIÁC · CHỈ SỐ THEO %"
+		col.add_child(UIKit.label(group_name, 14, Color("ffe08a") if group_mode == "flat" else Color("a9d4ff")))
+		for gem_type in GameData.GEMS:
+			var data: Dictionary = GameData.GEMS[gem_type]
+			if String(data["mode"]) != group_mode:
+				continue
+			var row := HBoxContainer.new()
+			row.add_theme_constant_override("separation", 8)
+			var tint := Color("#" + String(data["color"]))
+			var text_tint := tint.lightened(0.55) if String(data["stat"]) == "crit_dmg" else tint
+			var name_label := UIKit.label("%s %s" % [String(data["shape"]), String(data["name"])], 12, text_tint)
+			name_label.custom_minimum_size.x = 158
+			row.add_child(name_label)
+			var strength := UIKit.label(_gem_strength_text(data), 10, UIKit.MUTED_COLOR)
+			strength.custom_minimum_size.x = 104
+			row.add_child(strength)
+			var select := OptionButton.new()
+			select.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			select.add_item("Không trang bị")
+			select.set_item_metadata(0, 0)
+			var selected_level: int = int(equipped.get(gem_type, 0))
+			for level in range(1, GameData.GEM_LEVELS + 1):
+				select.add_item("Cấp %d · túi %d" % [level, GameState.gem_count(gem_type, level)])
+				select.set_item_metadata(select.item_count - 1, level)
+				if selected_level == level:
+					select.select(level)
+			select.item_selected.connect(_on_gem_selected.bind(character_id, gem_type, select))
+			row.add_child(select)
+			var low_level := 0
+			for level in range(1, GameData.GEM_LEVELS):
+				if GameState.gem_count(gem_type, level) >= 3:
+					low_level = level
+					break
+			var combine_text := "Ghép ×3 → %d" % (low_level + 1) if low_level > 0 else "Thiếu ngọc"
+			var combine := UIKit.button(combine_text, Color("357f70"), 11, Vector2(116, 36))
+			combine.disabled = low_level == 0
+			combine.pressed.connect(_combine_gem.bind(gem_type, low_level))
+			row.add_child(combine)
+			col.add_child(row)
 	return panel
 
 
@@ -375,6 +411,17 @@ func _gear_summary(stats: Dictionary) -> String:
 		if int(stats.get(stat, 0)) > 0:
 			parts.append("%s +%s" % [_stat_name(stat), _fmt(int(stats[stat]))])
 	return " / ".join(parts)
+
+
+func _gem_strength_text(gem: Dictionary) -> String:
+	var stat: String = String(gem["stat"]).to_upper()
+	if stat in ["CRIT", "CRIT_DMG"]:
+		if String(gem["mode"]) == "flat":
+			return "+%.1f điểm %%/cấp" % (float(gem["per_level"]) * 100.0)
+		return "+%.0f%% tương đối/cấp" % (float(gem["per_level"]) * 100.0)
+	if String(gem["mode"]) == "flat":
+		return "+%d %s/cấp" % [int(gem["per_level"]), stat]
+	return "+%.1f%% %s/cấp" % [float(gem["per_level"]) * 100.0, stat]
 
 
 

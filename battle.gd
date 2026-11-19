@@ -12,6 +12,9 @@ const CHARACTER_ANIMATIONS = preload("res://scripts/character_animations.gd")
 const USE_CHARACTER_ANIMATIONS: bool = true
 const BACKGROUND_PATH = "res://background.jpg"
 const BAR_W = 100.0
+const BATTLE_ART_SCALE := 0.60
+const BATTLE_ART_MAX_HEIGHT := 150.0
+const ARENA_WIDTH := 1152.0
 
 const MAX_ROUNDS = 40
 
@@ -309,8 +312,12 @@ func build_ui() -> void:
 	add_child(banner_label)
 
 	log_label = Label.new()
-	log_label.position = Vector2(20, 568)
-	log_label.add_theme_font_size_override("font_size", 15)
+	log_label.position = Vector2(432, 564)
+	log_label.size = Vector2(288, 70)
+	log_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	log_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	log_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	log_label.add_theme_font_size_override("font_size", 13)
 	log_label.add_theme_constant_override("outline_size", 5)
 	add_child(log_label)
 
@@ -338,11 +345,22 @@ func build_ui() -> void:
 	speed_button.z_index = 30
 	speed_button.pressed.connect(on_speed_pressed)
 	add_child(speed_button)
+	var formation_button := Button.new()
+	formation_button.text = "BỐ TRẬN"
+	formation_button.size = Vector2(132, 36)
+	formation_button.position = Vector2(852, 8)
+	formation_button.z_index = 30
+	formation_button.add_theme_font_size_override("font_size", 15)
+	formation_button.add_theme_stylebox_override("normal", UIKit.style(Color("315c70"), 8, Color("b5e7f1"), 1, 5.0))
+	formation_button.add_theme_stylebox_override("hover", UIKit.style(Color("427c91"), 8, Color("e2f9ff"), 1, 5.0))
+	formation_button.add_theme_stylebox_override("pressed", UIKit.style(Color("244657"), 8, Color("b5e7f1"), 1, 5.0))
+	formation_button.pressed.connect(_open_formation)
+	add_child(formation_button)
 	if _is_training():
 		var leave_button := Button.new()
 		leave_button.text = "KẾT THÚC HUẤN LUYỆN"
-		leave_button.size = Vector2(180, 36)
-		leave_button.position = Vector2(800, 8)
+		leave_button.size = Vector2(184, 36)
+		leave_button.position = Vector2(654, 8)
 		leave_button.z_index = 30
 		leave_button.pressed.connect(_leave_training)
 		add_child(leave_button)
@@ -530,12 +548,17 @@ func shake(u: Dictionary) -> void:
 #  TẠO NHÂN VẬT
 # ======================================================================
 
+func battle_display_height(id: String) -> float:
+	if id == "training_dummy":
+		return 145.0
+	return minf(GameData.character_display_height(id) * BATTLE_ART_SCALE, BATTLE_ART_MAX_HEIGHT)
+
 func make_visual(id: String, d: Dictionary, team: int) -> CanvasItem:
 	if id == "training_dummy":
 		return make_training_dummy_visual()
 	var sprite: AnimatedSprite2D = CHARACTER_ANIMATIONS.create_sprite(
 		id,
-		GameData.character_display_height(id),
+		battle_display_height(id),
 		team
 	)
 	if sprite != null:
@@ -551,7 +574,7 @@ func make_visual(id: String, d: Dictionary, team: int) -> CanvasItem:
 			still.centered = false
 			still.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 			still.flip_h = team == 1
-			var image_scale: float = GameData.character_display_height(id) / texture.get_height()
+			var image_scale: float = battle_display_height(id) / texture.get_height()
 			still.scale = Vector2.ONE * image_scale
 			still.offset = Vector2(-texture.get_width() * 0.5, -texture.get_height())
 			return still
@@ -734,23 +757,27 @@ func build_extra_character(id: String) -> Dictionary:
 
 func formation_position(team: int, slot: int, team_size: int) -> Vector2:
 	if team_size > 3:
-		var column: int = slot % 3
-		var row: int = int(slot / 3)
-		var x: float = 118.0 + float(column) * 130.0 if team == 0 else 1034.0 - float(column) * 130.0
-		var y: float = 250.0 if row == 0 else 430.0
+		var column: int = floori(float(slot) / 3.0)
+		var row: int = slot % 3
+		var left_x := [105.0, 345.0]
+		var row_y := [262.0, 422.0, 582.0]
+		var x: float = float(left_x[column])
+		if team == 1:
+			x = ARENA_WIDTH - x
+		var y: float = float(row_y[row])
 		return Vector2(x, y)
-	var x: float = 235.0 if team == 0 else 920.0
-	var y: float = 400.0
-
+	var x_positions := PackedFloat32Array()
 	match team_size:
 		1:
-			y = 400.0
+			x_positions = PackedFloat32Array([286.0])
 		2:
-			y = 310.0 + float(slot) * 175.0
+			x_positions = PackedFloat32Array([190.0, 382.0])
 		3:
-			y = 215.0 + float(slot) * 150.0
-
-	return Vector2(x, y)
+			x_positions = PackedFloat32Array([100.0, 280.0, 460.0])
+	var x: float = float(x_positions[slot])
+	if team == 1:
+		x = ARENA_WIDTH - x
+	return Vector2(x, 455.0)
 
 func make_unit(id: String, team: int, slot: int, team_size: int) -> Dictionary:
 	var d = roster[id]
@@ -760,13 +787,18 @@ func make_unit(id: String, team: int, slot: int, team_size: int) -> Dictionary:
 	# [META] Cộng chỉ số theo số sao (chỉ đội người chơi, chỉ khi vào trận từ sảnh)
 	if team == 0 and GameState.pending_battle.has("team_a"):
 		var bonus: Dictionary = GameState.character_flat_bonus(id)
+		var percent_bonus: Dictionary = GameState.character_percent_bonus(id)
+		var support_bonus: Dictionary = GameState.support_team_bonus()
 		for k in ["hp", "atk", "mag", "def"]:
-			u[k] = int(d[k]) + int(bonus.get(k, 0))
+			u[k] = int(round((float(d[k]) + float(bonus.get(k, 0))) * (1.0 + float(percent_bonus.get(k, 0.0))))) + int(support_bonus.get(k, 0))
+		var secondary_flat: Dictionary = GameState.character_secondary_flat_bonus(id)
+		u["crit"] = clampf(float(u["crit"]) * (1.0 + float(percent_bonus.get("crit", 0.0))) + float(secondary_flat.get("crit", 0.0)), 0.0, 1.0)
+		u["crit_dmg"] = float(u["crit_dmg"]) * (1.0 + float(percent_bonus.get("crit_dmg", 0.0))) + float(secondary_flat.get("crit_dmg", 0.0))
 	elif team == 1 and GameState.pending_battle.has("enemy_scale"):
 		var enemy_scale: float = float(GameState.pending_battle.get("enemy_scale", 1.0))
 		for k in ["hp", "atk", "mag", "def"]:
 			u[k] = int(round(float(d[k]) * enemy_scale))
-	u["h"] = float(d["h"])
+	u["h"] = battle_display_height(id)
 	u["id"] = id
 	u["uid"] = next_uid
 	next_uid += 1
@@ -796,6 +828,7 @@ func make_unit(id: String, team: int, slot: int, team_size: int) -> Dictionary:
 
 	var root = Node2D.new()
 	root.position = formation_position(team, slot, team_size)
+	root.z_index = 1 if root.position.y > 400.0 else 0
 	add_child(root)
 
 	var body = make_visual(id, u, team)
@@ -1836,21 +1869,31 @@ func cast(u: Dictionary, key: String) -> void:
 							0.32
 						)
 
-						# Kaido: rung mạnh, khựng lâu hơn
-						shake_screen(16.0)
-						await play_hit_stop(0.11, 0.04)
+						# Kaido: điểm nổ nặng hơn, nhưng vẫn giữ rung gọn để không che trận đấu.
+						shake_screen(12.0)
+						await play_hit_stop(0.12, 0.05)
 
 					else:
-						# Ultimate các nhân vật khác giữ nguyên
-						shake_screen(10.0)
-						await play_hit_stop(0.075, 0.07)
+						# Ultimate: hit-stop rõ hơn để nhấn khoảnh khắc trúng đòn.
+						shake_screen(8.0)
+						await play_hit_stop(0.11, 0.08)
 
-				elif key == "s2" and u["id"] in ["zoro", "shanks", "kaido"]:
+				elif key == "s2":
 					cinematic_hit_used = true
 
-					# Skill 2 của ba nhân vật này có va chạm nhẹ hơn.
-					shake_screen(4.5)
-					await play_hit_stop(0.035, 0.16)
+					shake_screen(5.0)
+					await play_hit_stop(0.085, 0.14)
+
+				elif key == "s1":
+					cinematic_hit_used = true
+					shake_screen(3.5)
+					await play_hit_stop(0.075, 0.20)
+
+				else:
+					# Đòn thường cũng có một nhịp va chạm nhẹ, không dừng nhịp trận.
+					cinematic_hit_used = true
+					shake_screen(2.5)
+					await play_hit_stop(0.055, 0.25)
 
 			if not hit_any:
 				break
@@ -2556,6 +2599,11 @@ var battle_over: bool = false
 
 func _is_training() -> bool:
 	return String(GameState.pending_battle.get("mode", "")) == "training"
+
+
+func _open_formation() -> void:
+	GameState.pending_battle = {}
+	SceneManager.change_scene(GameData.SCENE_FORMATION)
 
 
 func _leave_training() -> void:

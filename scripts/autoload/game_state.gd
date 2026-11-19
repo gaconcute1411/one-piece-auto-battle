@@ -6,7 +6,7 @@ signal roster_changed
 signal team_changed
 
 const SAVE_PATH := "user://save.json"
-const SAVE_VERSION := 3
+const SAVE_VERSION := 4
 
 var player_name: String = "Thuyền trưởng"
 var coins: int = 0
@@ -24,9 +24,11 @@ var daily_wins: int = 0
 var daily_date: String = ""
 var quest_claimed: Dictionary = {}
 var equipment: Dictionary = {}        # character_id -> slot -> equipment_id
+var equipment_inventory: Dictionary = {} # equipment_id -> owned count (equipped items remain in this count)
 var treasures: Dictionary = {}        # character_id -> treasure slot -> treasure_id
 var gem_inventory: Dictionary = {}    # gem type -> counts for levels 1..10
 var gems_equipped: Dictionary = {}    # character_id -> gem type -> level
+var support_team: Array = []          # six non-combat supporters; each slot grants a stat bonus
 var pet_levels: Dictionary = {}
 var active_pet: String = "cove_cub"
 var selected_character: String = ""
@@ -73,14 +75,13 @@ func new_game() -> void:
 	daily_date = today()
 	quest_claimed = {}
 	equipment = {}
+	equipment_inventory = {}
 	treasures = {}
-	gem_inventory = {
-		"hp": [3, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		"atk": [3, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		"mag": [3, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		"def": [3, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	}
+	gem_inventory = {}
+	for gem_type in GameData.GEMS:
+		gem_inventory[gem_type] = [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	gems_equipped = {}
+	support_team = ["", "", "", "", "", ""]
 	pet_levels = {}
 	for pet_id in GameData.PETS:
 		pet_levels[pet_id] = 1
@@ -118,9 +119,11 @@ func save_game() -> void:
 		"daily_date": daily_date,
 		"quest_claimed": quest_claimed,
 		"equipment": equipment,
+		"equipment_inventory": equipment_inventory,
 		"treasures": treasures,
 		"gem_inventory": gem_inventory,
 		"gems_equipped": gems_equipped,
+		"support_team": support_team,
 		"pet_levels": pet_levels,
 		"active_pet": active_pet,
 		"login_event_streak": login_event_streak,
@@ -166,12 +169,36 @@ func load_game() -> bool:
 	daily_date = String(d.get("daily_date", today()))
 	quest_claimed = d.get("quest_claimed", {})
 	equipment = d.get("equipment", {})
+	equipment_inventory = {}
+	var raw_equipment_inventory: Dictionary = d.get("equipment_inventory", {})
+	for item_id in raw_equipment_inventory:
+		if GameData.EQUIPMENT.has(item_id):
+			equipment_inventory[item_id] = maxi(0, int(raw_equipment_inventory[item_id]))
+	# Keep items already equipped in saves from before the shop was added.
+	for character_id in equipment:
+		for item_id in equipment[character_id].values():
+			if GameData.EQUIPMENT.has(item_id):
+				equipment_inventory[item_id] = maxi(equipment_item_use_count(String(item_id)), int(equipment_inventory.get(item_id, 0)))
 	treasures = d.get("treasures", {})
-	gems_equipped = d.get("gems_equipped", {})
+	gems_equipped = {}
+	var raw_equipped_gems: Dictionary = d.get("gems_equipped", {})
+	for character_id in raw_equipped_gems:
+		var migrated_gems: Dictionary = {}
+		for gem_type in raw_equipped_gems[character_id]:
+			var migrated_type: String = String(gem_type)
+			if not GameData.GEMS.has(migrated_type) and GameData.GEMS.has(migrated_type + "_crystal"):
+				migrated_type += "_crystal"
+			if GameData.GEMS.has(migrated_type):
+				migrated_gems[migrated_type] = int(raw_equipped_gems[character_id][gem_type])
+		gems_equipped[character_id] = migrated_gems
 	gem_inventory = {}
 	var raw_gems: Dictionary = d.get("gem_inventory", {})
 	for gem_type in GameData.GEMS:
-		var counts: Array = raw_gems.get(gem_type, [3, 0, 0, 0, 0, 0, 0, 0, 0, 0]).duplicate()
+		var legacy_type: String = String(gem_type).trim_suffix("_crystal")
+		var raw_counts: Variant = raw_gems.get(gem_type, null)
+		if raw_counts == null and String(gem_type).ends_with("_crystal"):
+			raw_counts = raw_gems.get(legacy_type, null)
+		var counts: Array = raw_counts.duplicate() if raw_counts is Array else [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 		while counts.size() < GameData.GEM_LEVELS:
 			counts.append(0)
 		if counts.size() > GameData.GEM_LEVELS:
@@ -215,6 +242,12 @@ func load_game() -> bool:
 			team.append(id)
 	if team.is_empty():
 		_fill_default_team()
+	support_team = ["", "", "", "", "", ""]
+	var raw_support: Array = d.get("support_team", [])
+	for slot in range(mini(raw_support.size(), GameData.SUPPORT_SLOT_STATS.size())):
+		var support_id: String = String(raw_support[slot])
+		if support_id != "" and owned.has(support_id) and not support_team.has(support_id):
+			support_team[slot] = support_id
 	return true
 
 
@@ -274,13 +307,65 @@ func character_flat_bonus(id: String) -> Dictionary:
 		var gem_level: int = clampi(int(equipped_gems[gem_type]), 0, GameData.GEM_LEVELS)
 		var gem: Dictionary = GameData.GEMS[gem_type]
 		var stat: String = String(gem["stat"])
-		result[stat] = int(result[stat]) + int(gem["per_level"]) * gem_level
+		if String(gem["mode"]) == "flat" and result.has(stat):
+			result[stat] = int(result[stat]) + int(gem["per_level"]) * gem_level
 	if GameData.PETS.has(active_pet):
 		var pet_data: Dictionary = GameData.PETS[active_pet]
 		var level: int = int(pet_levels.get(active_pet, 1))
 		var per_level: Dictionary = pet_data["per_level"]
 		for stat in ["hp", "atk", "mag", "def"]:
 			result[stat] = int(result[stat]) + int(per_level.get(stat, 0)) * level
+	return result
+
+
+func character_percent_bonus(id: String) -> Dictionary:
+	var result: Dictionary = {"hp": 0.0, "atk": 0.0, "mag": 0.0, "def": 0.0, "crit": 0.0, "crit_dmg": 0.0}
+	var equipped_gems: Dictionary = gems_equipped.get(id, {})
+	for gem_type in equipped_gems:
+		if not GameData.GEMS.has(gem_type):
+			continue
+		var gem: Dictionary = GameData.GEMS[gem_type]
+		if String(gem["mode"]) != "percent":
+			continue
+		var stat: String = String(gem["stat"])
+		var level: int = clampi(int(equipped_gems[gem_type]), 0, GameData.GEM_LEVELS)
+		result[stat] = float(result.get(stat, 0.0)) + float(gem["per_level"]) * level
+	return result
+
+
+func character_secondary_flat_bonus(id: String) -> Dictionary:
+	var result: Dictionary = {"crit": 0.0, "crit_dmg": 0.0}
+	var equipped_gems: Dictionary = gems_equipped.get(id, {})
+	for gem_type in equipped_gems:
+		if not GameData.GEMS.has(gem_type):
+			continue
+		var gem: Dictionary = GameData.GEMS[gem_type]
+		var stat: String = String(gem["stat"])
+		if String(gem["mode"]) == "flat" and result.has(stat):
+			result[stat] = float(result[stat]) + float(gem["per_level"]) * int(equipped_gems[gem_type])
+	return result
+
+
+func character_primary_stat(id: String, stat: String) -> float:
+	if not GameData.BASE_STATS.has(id) or not ["hp", "atk", "mag", "def"].has(stat):
+		return 0.0
+	var base: Dictionary = GameData.BASE_STATS[id]
+	var flat: Dictionary = character_flat_bonus(id)
+	var pct: Dictionary = character_percent_bonus(id)
+	return (float(base[stat]) + float(flat.get(stat, 0))) * (1.0 + float(pct.get(stat, 0.0)))
+
+
+func support_team_bonus() -> Dictionary:
+	var result: Dictionary = {"hp": 0, "atk": 0, "mag": 0, "def": 0}
+	var fractional: Dictionary = {"hp": 0.0, "atk": 0.0, "mag": 0.0, "def": 0.0}
+	for slot in range(mini(support_team.size(), GameData.SUPPORT_SLOT_STATS.size())):
+		var id: String = String(support_team[slot])
+		if id == "" or not owned.has(id):
+			continue
+		var stat: String = String(GameData.SUPPORT_SLOT_STATS[slot])
+		fractional[stat] = float(fractional[stat]) + character_primary_stat(id, stat) * GameData.SUPPORT_STAT_RATE
+	for stat in fractional:
+		result[stat] = int(round(float(fractional[stat])))
 	return result
 
 
@@ -307,11 +392,54 @@ func equip_item(id: String, slot: String, item_id: String) -> bool:
 	if item_id != "" and String(GameData.EQUIPMENT[item_id]["slot"]) != slot:
 		return false
 	var slots: Dictionary = equipment.get(id, {}).duplicate(true)
+	if item_id != "" and String(slots.get(slot, "")) != item_id and equipment_item_use_count(item_id) >= equipment_count(item_id):
+		return false
 	if item_id == "":
 		slots.erase(slot)
 	else:
 		slots[slot] = item_id
 	equipment[id] = slots
+	save_game()
+	roster_changed.emit()
+	return true
+
+
+func equipment_count(item_id: String) -> int:
+	return int(equipment_inventory.get(item_id, 0))
+
+
+func equipment_item_use_count(item_id: String) -> int:
+	var count := 0
+	for character_id in equipment:
+		for equipped_id in equipment[character_id].values():
+			if String(equipped_id) == item_id:
+				count += 1
+	return count
+
+
+func buy_equipment(item_id: String) -> bool:
+	if not GameData.EQUIPMENT.has(item_id):
+		return false
+	var price: int = int(GameData.SHOP_EQUIPMENT_PRICES.get(item_id, 0))
+	if price <= 0 or not spend_coins(price):
+		return false
+	equipment_inventory[item_id] = equipment_count(item_id) + 1
+	save_game()
+	return true
+
+
+func buy_gem(gem_type: String) -> bool:
+	if not GameData.GEMS.has(gem_type):
+		return false
+	var gem: Dictionary = GameData.GEMS[gem_type]
+	var price: int = GameData.SHOP_GEM_FLAT_PRICE if String(gem["mode"]) == "flat" else GameData.SHOP_GEM_PERCENT_PRICE
+	if not spend_coins(price):
+		return false
+	if not gem_inventory.has(gem_type):
+		gem_inventory[gem_type] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+	var counts: Array = gem_inventory[gem_type]
+	counts[0] = int(counts[0]) + 1
+	gem_inventory[gem_type] = counts
 	save_game()
 	return true
 
@@ -473,6 +601,54 @@ func toggle_team_member(id: String) -> bool:
 		team.append(id)
 	save_game()
 	team_changed.emit()
+	return true
+
+
+## Gán nhân vật vào một vị trí cố định trong màn bố trận. Nếu nhân vật đã ở đội,
+## hai vị trí sẽ đổi chỗ để luôn giữ đủ 6 người và không tạo bản trùng.
+func assign_team_slot(slot: int, id: String) -> bool:
+	if slot < 0 or slot >= GameData.TEAM_SIZE_MAX or not owned.has(id):
+		return false
+	var normalized: Array = []
+	for current_id in team:
+		if owned.has(current_id) and not normalized.has(current_id) and normalized.size() < GameData.TEAM_SIZE_MAX:
+			normalized.append(current_id)
+	for candidate in GameData.sorted_ids():
+		if normalized.size() >= GameData.TEAM_SIZE_MAX:
+			break
+		if owned.has(candidate) and not normalized.has(candidate):
+			normalized.append(candidate)
+	if normalized.size() < GameData.TEAM_SIZE_MAX:
+		return false
+	team = normalized
+	var existing_slot: int = team.find(id)
+	if existing_slot == slot:
+		save_game()
+		team_changed.emit()
+		return true
+	var displaced_id: String = String(team[slot])
+	team[slot] = id
+	if existing_slot >= 0:
+		team[existing_slot] = displaced_id
+	save_game()
+	team_changed.emit()
+	return true
+
+
+func set_support_slot(slot: int, id: String) -> bool:
+	if slot < 0 or slot >= GameData.SUPPORT_SLOT_STATS.size():
+		return false
+	if id != "" and not owned.has(id):
+		return false
+	var existing_slot: int = support_team.find(id) if id != "" else -1
+	if existing_slot == slot:
+		return true
+	var displaced_id: String = String(support_team[slot])
+	support_team[slot] = id
+	if existing_slot >= 0:
+		support_team[existing_slot] = displaced_id
+	save_game()
+	roster_changed.emit()
 	return true
 
 

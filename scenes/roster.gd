@@ -33,9 +33,12 @@ func _ready() -> void:
 	var back := UIKit.button("< Sảnh", Color("4a4f63"), 20, Vector2(120, 48))
 	back.pressed.connect(func(): SceneManager.change_scene(GameData.SCENE_LOBBY))
 	top.add_child(back)
-	var title := UIKit.label("NHÂN VẬT & ĐỘI HÌNH", 30, Color("ffe08a"), HORIZONTAL_ALIGNMENT_CENTER)
+	var title := UIKit.label("KHO NHÂN VẬT", 30, Color("ffe08a"), HORIZONTAL_ALIGNMENT_CENTER)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(title)
+	var formation := UIKit.button("BỐ TRẬN", Color("367d62"), 16, Vector2(130, 48))
+	formation.pressed.connect(func(): SceneManager.change_scene(GameData.SCENE_FORMATION))
+	top.add_child(formation)
 	top.add_child(CoinBar.new())
 
 	_team_label = UIKit.label("", 20, UIKit.MUTED_COLOR, HORIZONTAL_ALIGNMENT_CENTER)

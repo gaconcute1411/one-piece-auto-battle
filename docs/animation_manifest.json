@@ -23,9 +23,9 @@
       "source": "Zoro_Animation_Lab_Godot4",
       "clips": {
         "battle_loop": 6,
-        "s1": 6,
+        "s1": 12,
         "s2": 6,
-        "ult": 12
+        "ult": 20
       },
       "input_pivot": [
         384,
@@ -284,6 +284,6 @@
       ]
     }
   },
-  "total_frames": 240,
+  "total_frames": 254,
   "test_status": "resource inspection and static checks only; Godot runtime validation pending"
 }

@@ -122,7 +122,7 @@ func _build_side_column() -> Control:
 		{"key": "training", "label": "Huấn luyện", "color": Color("bd7b34"), "scene": GameData.SCENE_TRAINING},
 		{"key": "rank", "label": "Xếp hạng", "color": Color("b8402f"), "scene": ""},
 		{"key": "news", "label": "Tin tức", "color": Color("2f8f9d"), "scene": ""},
-		{"key": "shop", "label": "Cửa hàng", "color": Color("3c8d5a"), "scene": ""},
+		{"key": "shop", "label": "Cửa hàng", "color": Color("3c8d5a"), "scene": GameData.SCENE_SHOP},
 	]
 	for it in items:
 		col.add_child(_icon_button(it))
@@ -139,10 +139,10 @@ func _build_bottom_nav() -> Control:
 	bar.add_child(row)
 
 	var items := [
-		{"key": "formation", "label": "Đội hình", "color": Color("3c8d5a"), "scene": GameData.SCENE_ROSTER},
+		{"key": "formation", "label": "Đội hình", "color": Color("3c8d5a"), "scene": GameData.SCENE_FORMATION},
 		{"key": "pet", "label": "Thú cưng", "color": Color("347f9a"), "scene": GameData.SCENE_PETS},
 		{"key": "summon", "label": "Triệu hồi", "color": Color("8a4fd8"), "scene": GameData.SCENE_GACHA},
-		{"key": "bag", "label": "Túi đồ", "color": Color("b07a2a"), "scene": ""},
+		{"key": "equipment", "label": "Trang bị", "color": Color("b07a2a"), "scene": GameData.SCENE_EQUIPMENT},
 		{"key": "friends", "label": "Bạn bè", "color": Color("d0607a"), "scene": ""},
 		{"key": "guild", "label": "Bang hội", "color": Color("2f6fed"), "scene": ""},
 		{"key": "mail", "label": "Thư", "color": Color("9a7b5a"), "scene": ""},
