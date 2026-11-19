@@ -6,11 +6,12 @@ signal roster_changed
 signal team_changed
 
 const SAVE_PATH := "user://save.json"
-const SAVE_VERSION := 4
+const SAVE_VERSION := 5
 
 var player_name: String = "Thuyền trưởng"
 var coins: int = 0
 var owned: Dictionary = {}          # id -> số sao (1..MAX_STARS)
+var character_levels: Dictionary = {} # id -> cấp nhân vật (1..MAX_CHARACTER_LEVEL)
 var character_copies: Dictionary = {} # id -> bản sao dùng nâng sao
 var character_shards: Dictionary = {} # id -> mảnh riêng của nhân vật
 var team: Array = []                # đội hình chiến đấu, tối đa 6 nhân vật
@@ -37,6 +38,7 @@ var login_event_last_date: String = ""
 var sp_choice_claimed: bool = false
 var spend_event_total: int = 0
 var spend_event_claimed: Dictionary = {}
+var _cp_missing_role_warnings: Dictionary = {}
 
 # --- Dữ liệu tạm, KHÔNG lưu ---
 var pending_battle: Dictionary = {}     # {"team_a": [...], "team_b": [...]}
@@ -60,10 +62,12 @@ func new_game() -> void:
 	player_name = "Thuyền trưởng"
 	coins = GameData.STARTING_COINS
 	owned = {}
+	character_levels = {}
 	character_copies = {}
 	character_shards = {}
 	for id in GameData.STARTER_TEAM:
 		owned[id] = 1
+		character_levels[id] = 1
 	team = GameData.STARTER_TEAM.duplicate()
 	pity_ur = 0
 	total_pulls = 0
@@ -106,6 +110,7 @@ func save_game() -> void:
 		"player_name": player_name,
 		"coins": coins,
 		"owned": owned,
+		"character_levels": character_levels,
 		"character_copies": character_copies,
 		"character_shards": character_shards,
 		"team": team,
@@ -219,6 +224,10 @@ func load_game() -> bool:
 		# Bỏ nhân vật không còn tồn tại trong GameData (đề phòng bạn đổi tên id)
 		if GameData.CHARACTERS.has(id):
 			owned[id] = clampi(int(raw_owned[id]), 1, GameData.MAX_STARS)
+	character_levels = {}
+	var raw_levels: Dictionary = d.get("character_levels", {})
+	for id in owned:
+		character_levels[id] = clampi(int(raw_levels.get(id, 1)), 1, GameData.MAX_CHARACTER_LEVEL)
 	var raw_copies: Dictionary = d.get("character_copies", {})
 	for id in raw_copies:
 		if GameData.CHARACTERS.has(id):
@@ -231,6 +240,8 @@ func load_game() -> bool:
 	for id in GameData.STARTER_TEAM:
 		if not owned.has(id):
 			owned[id] = 1
+		if not character_levels.has(id):
+			character_levels[id] = 1
 	team = []
 	for id in d.get("team", []):
 		if owned.has(id) and team.size() < GameData.TEAM_SIZE_MAX:
@@ -282,8 +293,31 @@ func stars_of(id: String) -> int:
 	return int(owned.get(id, 0))
 
 
+func level_of(id: String) -> int:
+	return int(character_levels.get(id, 1))
+
+
+func level_up_cost(id: String) -> int:
+	return level_of(id) * GameData.CHARACTER_LEVEL_UP_BASE_COST
+
+
+func level_up_character(id: String) -> bool:
+	if not owned.has(id):
+		return false
+	var current_level: int = level_of(id)
+	if current_level >= GameData.MAX_CHARACTER_LEVEL or not spend_coins(level_up_cost(id)):
+		return false
+	character_levels[id] = current_level + 1
+	save_game()
+	roster_changed.emit()
+	return true
+
+
 func character_flat_bonus(id: String) -> Dictionary:
 	var result: Dictionary = GameData.star_bonus(stars_of(id))
+	var level_steps: int = maxi(0, level_of(id) - 1)
+	for stat in GameData.CHARACTER_LEVEL_STAT_PER_STEP:
+		result[stat] = int(result.get(stat, 0)) + int(GameData.CHARACTER_LEVEL_STAT_PER_STEP[stat]) * level_steps
 	var slots: Dictionary = equipment.get(id, {})
 	for slot in slots:
 		var item_id: String = String(slots[slot])
@@ -353,6 +387,68 @@ func character_primary_stat(id: String, stat: String) -> float:
 	var flat: Dictionary = character_flat_bonus(id)
 	var pct: Dictionary = character_percent_bonus(id)
 	return (float(base[stat]) + float(flat.get(stat, 0))) * (1.0 + float(pct.get(stat, 0.0)))
+
+
+## Tính chiến lực trên chỉ số cuối cùng; nhận id hoặc dictionary chỉ số đã dựng sẵn.
+func calcCharacterCP(character: Variant) -> int:
+	var source: Dictionary = character if character is Dictionary else {}
+	var id := String(character) if character is String else String(source.get("id", source.get("character_id", "")))
+	var primary: Dictionary = {}
+	var secondary: Dictionary = {}
+	var role := String(source.get("cp_role", source.get("role", "")))
+	if GameData.BASE_STATS.has(id):
+		var base: Dictionary = GameData.BASE_STATS[id]
+		var flat: Dictionary = character_flat_bonus(id)
+		var percent: Dictionary = character_percent_bonus(id)
+		var support: Dictionary = support_team_bonus() if team.has(id) else {}
+		for stat in ["hp", "atk", "mag", "def"]:
+			primary[stat] = maxf(0.0, (float(base.get(stat, 0)) + float(flat.get(stat, 0))) * (1.0 + float(percent.get(stat, 0.0))) + float(support.get(stat, 0)))
+		secondary = GameData.SECONDARY_STATS.get(id, {})
+		var secondary_flat: Dictionary = character_secondary_flat_bonus(id)
+		var crit_percent: float = float(percent.get("crit", 0.0))
+		var crit_dmg_percent: float = float(percent.get("crit_dmg", 0.0))
+		secondary = secondary.duplicate(true)
+		secondary["crit"] = float(secondary.get("crit", 0.0)) * (1.0 + crit_percent) + float(secondary_flat.get("crit", 0.0))
+		secondary["crit_dmg"] = float(secondary.get("crit_dmg", 0.0)) * (1.0 + crit_dmg_percent) + float(secondary_flat.get("crit_dmg", 0.0))
+		role = String(GameData.CHARACTERS.get(id, {}).get("cp_role", role))
+	else:
+		for stat in ["hp", "atk", "mag", "def"]:
+			primary[stat] = maxf(0.0, float(source.get(stat, 0.0)))
+		secondary = source
+	var warning_key := id if not id.is_empty() else String(source.get("name", "unknown_character"))
+	if role == "" or not ["DPS", "Tank", "Healer"].has(role):
+		if not _cp_missing_role_warnings.has(warning_key):
+			push_warning("Nhân vật %s thiếu role chiến lực hợp lệ; tạm dùng DPS." % warning_key)
+			_cp_missing_role_warnings[warning_key] = true
+		role = "DPS"
+	var config: Dictionary = GameData.CHARACTER_CP_CONFIG
+	var crit_rate: float = clampf(maxf(0.0, float(secondary.get("crit", source.get("crit_rate", 0.0)))), 0.0, float(config["crit_rate_cap"]))
+	var crit_damage: float = maxf(0.0, float(secondary.get("crit_dmg", source.get("crit_dmg", 0.0))))
+	var evasion: float = clampf(maxf(0.0, float(secondary.get("evasion", source.get("evasion", 0.0)))), 0.0, float(config["evasion_cap"]))
+	var speed: float = maxf(0.0, float(secondary.get("spd", source.get("spd", source.get("speed", 0.0)))))
+	var role_multiplier: float = 1.0 if role == "DPS" else float(config["non_dps_role_multiplier"])
+	var main_stat: float = maxf(float(primary.get("atk", 0.0)), float(primary.get("mag", 0.0)))
+	var main: float = main_stat * (1.0 + crit_rate * (crit_damage - 1.0)) * role_multiplier
+	main = maxf(0.0, main)
+	var hp: float = maxf(0.0, float(primary.get("hp", 0.0)))
+	var defense: float = maxf(0.0, float(primary.get("def", 0.0)))
+	var ehp: float = hp * (1.0 + defense / float(config["defense_scale"])) / (1.0 - evasion)
+	var speed_factor: float = maxf(0.0, 1.0 + (speed - 100.0) / float(config["speed_scale"]))
+	var raw: float = sqrt(maxf(0.0, main * ehp)) * speed_factor
+	return maxi(0, int(round(float(config["coefficient"]) * pow(raw, float(config["exponent"])))))
+
+
+func teamBonus(_team: Array) -> float:
+	return 0.0
+
+
+func calcTeamCP(characters: Array) -> int:
+	var total: int = 0
+	for character in characters:
+		if character == null or (character is String and String(character).is_empty()) or (character is Dictionary and character.is_empty()):
+			continue
+		total += calcCharacterCP(character)
+	return maxi(0, int(round(float(total) * (1.0 + teamBonus(characters)))))
 
 
 func support_team_bonus() -> Dictionary:
@@ -488,6 +584,7 @@ func exchange_character_shards(id: String) -> bool:
 		character_copies[id] = copies_of(id) + 1
 	else:
 		owned[id] = 1
+		character_levels[id] = 1
 		if team.size() < GameData.TEAM_SIZE_MAX:
 			team.append(id)
 			team_changed.emit()
@@ -575,6 +672,7 @@ func add_character(id: String) -> Dictionary:
 	var res := {"is_new": false, "star_up": false, "copy": false, "stars": 1, "refund": 0}
 	if not owned.has(id):
 		owned[id] = 1
+		character_levels[id] = 1
 		res["is_new"] = true
 		if team.size() < GameData.TEAM_SIZE_MAX:
 			team.append(id)

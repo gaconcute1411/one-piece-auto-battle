@@ -47,6 +47,20 @@ const PULL_COST_10 := 1500            # rẻ hơn 100 coin so với 10 lần đ�
 const PITY_UR := 50                   # đủ 50 lượt không ra UR -> lượt thứ 50 chắc chắn UR
 const TEN_PULL_MIN_TIER := "SP"       # lượt cuối của x10 ít nhất bậc này nếu chưa có
 const MAX_STARS := 15
+const MAX_CHARACTER_LEVEL := 100
+const CHARACTER_LEVEL_UP_BASE_COST := 25
+const CHARACTER_LEVEL_STAT_PER_STEP := {"hp": 220, "atk": 20, "mag": 20, "def": 14}
+
+# Công thức chiến lực; tách riêng để tiện cân bằng mà không chạm chỉ số chiến đấu.
+const CHARACTER_CP_CONFIG := {
+	"defense_scale": 2000.0,
+	"non_dps_role_multiplier": 0.9,
+	"evasion_cap": 0.75,
+	"crit_rate_cap": 1.0,
+	"speed_scale": 200.0,
+	"coefficient": 103.35,
+	"exponent": 0.429,
+}
 # Bản sao cần để lên bậc sao kế tiếp, khóa theo số sao đích.
 const STAR_COPY_COST := {2: 1, 3: 1, 4: 2, 5: 2, 6: 3, 7: 3, 8: 4, 9: 4, 10: 5, 11: 5, 12: 6, 13: 6, 14: 7, 15: 8}
 const STAR_STAT_PER_STEP := {"hp": 650, "atk": 70, "mag": 70, "def": 45}
@@ -142,30 +156,30 @@ const LOGIN_REWARDS := [
 # ---- Danh sách nhân vật: bậc + thông tin hiển thị ----
 # Phân bậc dưới đây là GỢI Ý tạm, bạn đổi tùy ý.
 const CHARACTERS := {
-	"kaido":   {"name": "Kaido",   "tier": "UR",  "role": "Đỡ đòn / Diện rộng"},
-	"shanks":  {"name": "Shanks",  "tier": "UR",  "role": "Sát thương / Chí mạng"},
-	"zoro":    {"name": "Zoro",    "tier": "SP",  "role": "Sát thương đơn mục tiêu"},
-	"ace":     {"name": "Ace",     "tier": "SP",  "role": "Phép lửa / Phản đòn"},
-	"sabo":    {"name": "Sabo",    "tier": "SP",  "role": "Phép lửa diện rộng"},
-	"chopper": {"name": "Chopper", "tier": "SSR", "role": "Hồi máu / Hỗ trợ"},
-	"jinbei":  {"name": "Jinbei",  "tier": "SSR", "role": "Đỡ đòn / Phản công"},
-	"reiju":   {"name": "Reiju",   "tier": "SSR", "role": "Độc / Giảm hồi máu"},
-	"marco": {"name": "Marco", "tier": "UR", "role": "Hồi máu / Hộ vệ"},
-	"aokiji": {"name": "Aokiji", "tier": "SP", "role": "Đóng băng / Khống chế"},
-	"enel": {"name": "Enel", "tier": "SP", "role": "Điện / Tốc độ"},
-	"akainu": {"name": "Akainu", "tier": "UR", "role": "Dung nham / Sát thương diện rộng"},
-	"doflamingo": {"name": "Doflamingo", "tier": "SSR", "role": "Điều khiển / Chảy máu"},
-	"garp": {"name": "Garp", "tier": "UR", "role": "Phá giáp / Đơn mục tiêu"},
-	"jozu": {"name": "Jozu", "tier": "SSR", "role": "Đỡ đòn / Phản sát thương"},
-	"rayleigh": {"name": "Rayleigh", "tier": "UR", "role": "Haki / Đấu sĩ"},
-	"kizaru": {"name": "Kizaru", "tier": "SP", "role": "Tốc độ / Ám sát"},
-	"law": {"name": "Law", "tier": "SP", "role": "Hồi máu / Lá chắn"},
-	"sengoku": {"name": "Sengoku", "tier": "UR", "role": "Đỡ đòn / Hỗ trợ đội"},
-	"whitebeard": {"name": "Whitebeard", "tier": "UR", "role": "Chấn động / Đấu sĩ"},
-	"shirahoshi": {"name": "Shirahoshi", "tier": "SP", "role": "Hồi máu / Hải Vương"},
-	"magellan": {"name": "Magellan", "tier": "SP", "role": "Độc / Diện rộng"},
-	"kuma": {"name": "Kuma", "tier": "SSR", "role": "Đỡ đòn / Khống chế"},
-	"teach": {"name": "Teach", "tier": "SP", "role": "Hắc ám / Phá buff"},
+	"kaido":   {"name": "Kaido",   "tier": "UR",  "role": "Đỡ đòn / Diện rộng", "cp_role": "Tank"},
+	"shanks":  {"name": "Shanks",  "tier": "UR",  "role": "Sát thương / Chí mạng", "cp_role": "DPS"},
+	"zoro":    {"name": "Zoro",    "tier": "SP",  "role": "Sát thương đơn mục tiêu", "cp_role": "DPS"},
+	"ace":     {"name": "Ace",     "tier": "SP",  "role": "Phép lửa / Phản đòn", "cp_role": "DPS"},
+	"sabo":    {"name": "Sabo",    "tier": "SP",  "role": "Phép lửa diện rộng", "cp_role": "DPS"},
+	"chopper": {"name": "Chopper", "tier": "SSR", "role": "Hồi máu / Hỗ trợ", "cp_role": "Healer"},
+	"jinbei":  {"name": "Jinbei",  "tier": "SSR", "role": "Đỡ đòn / Phản công", "cp_role": "Tank"},
+	"reiju":   {"name": "Reiju",   "tier": "SSR", "role": "Độc / Giảm hồi máu", "cp_role": "DPS"},
+	"marco": {"name": "Marco", "tier": "UR", "role": "Hồi máu / Hộ vệ", "cp_role": "Healer"},
+	"aokiji": {"name": "Aokiji", "tier": "SP", "role": "Đóng băng / Khống chế", "cp_role": "DPS"},
+	"enel": {"name": "Enel", "tier": "SP", "role": "Điện / Tốc độ", "cp_role": "DPS"},
+	"akainu": {"name": "Akainu", "tier": "UR", "role": "Dung nham / Sát thương diện rộng", "cp_role": "DPS"},
+	"doflamingo": {"name": "Doflamingo", "tier": "SSR", "role": "Điều khiển / Chảy máu", "cp_role": "DPS"},
+	"garp": {"name": "Garp", "tier": "UR", "role": "Phá giáp / Đơn mục tiêu", "cp_role": "DPS"},
+	"jozu": {"name": "Jozu", "tier": "SSR", "role": "Đỡ đòn / Phản sát thương", "cp_role": "Tank"},
+	"rayleigh": {"name": "Rayleigh", "tier": "UR", "role": "Haki / Đấu sĩ", "cp_role": "DPS"},
+	"kizaru": {"name": "Kizaru", "tier": "SP", "role": "Tốc độ / Ám sát", "cp_role": "DPS"},
+	"law": {"name": "Law", "tier": "SP", "role": "Hồi máu / Lá chắn", "cp_role": "Healer"},
+	"sengoku": {"name": "Sengoku", "tier": "UR", "role": "Đỡ đòn / Hỗ trợ đội", "cp_role": "Tank"},
+	"whitebeard": {"name": "Whitebeard", "tier": "UR", "role": "Chấn động / Đấu sĩ", "cp_role": "DPS"},
+	"shirahoshi": {"name": "Shirahoshi", "tier": "SP", "role": "Hồi máu / Hải Vương", "cp_role": "Healer"},
+	"magellan": {"name": "Magellan", "tier": "SP", "role": "Độc / Diện rộng", "cp_role": "DPS"},
+	"kuma": {"name": "Kuma", "tier": "SSR", "role": "Đỡ đòn / Khống chế", "cp_role": "Tank"},
+	"teach": {"name": "Teach", "tier": "SP", "role": "Hắc ám / Phá buff", "cp_role": "DPS"},
 }
 
 const SKILL_NAMES := {

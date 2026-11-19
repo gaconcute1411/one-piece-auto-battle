@@ -2,9 +2,15 @@ extends Control
 ## Character profile demo: fixed star bonuses, team assignment, and four gear slots.
 
 const GOLD := Color("ffd36a")
+const PAGE_NAMES := ["INFO", "KỸ NĂNG", "NÂNG SAO", "CƯỜNG HÓA"]
 var character_id: String
 var team_button: Button
+var cp_label: Label
 var skill_profiles: Dictionary = {}
+var _active_page: int = 0
+var _page_content: VBoxContainer
+var _page_tabs: Array[Button] = []
+var _level_label: Label
 
 
 func _ready() -> void:
@@ -13,9 +19,9 @@ func _ready() -> void:
 	if parsed_profiles is Dictionary:
 		skill_profiles = parsed_profiles
 	if not GameState.owned.has(character_id):
-		character_id = GameState.STARTER_TEAM[0]
+		character_id = GameData.STARTER_TEAM[0]
 		GameState.selected_character = character_id
-	UIKit.add_background(self, 0.57)
+	UIKit.add_background(self, 0.42)
 	var root := VBoxContainer.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.offset_left = 24
@@ -27,56 +33,94 @@ func _ready() -> void:
 	root.add_child(_header())
 	var body := HBoxContainer.new()
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_theme_constant_override("separation", 14)
+	body.add_theme_constant_override("separation", 10)
 	root.add_child(body)
 	body.add_child(_portrait_panel())
-	var right_scroll := ScrollContainer.new()
-	right_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	right_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	right_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	body.add_child(right_scroll)
-	var right := VBoxContainer.new()
-	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	right.add_theme_constant_override("separation", 10)
-	right_scroll.add_child(right)
-	right.add_child(_stats_panel())
-	right.add_child(_star_panel())
-	right.add_child(_equipment_panel())
-	right.add_child(_treasure_panel())
-	right.add_child(_gem_panel())
-	right.add_child(_skill_panel())
+	body.add_child(_page_panel())
+	_refresh_page()
 
 
 func _header() -> Control:
 	var row := HBoxContainer.new()
-	var back := UIKit.button("‹ Nhân vật", Color("3c465c"), 18, Vector2(145, 46))
-	back.pressed.connect(func(): SceneManager.change_scene(GameData.SCENE_ROSTER))
-	row.add_child(back)
-	var title := UIKit.label("HỒ SƠ NHÂN VẬT", 28, GOLD, HORIZONTAL_ALIGNMENT_CENTER)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(title)
+	row.add_theme_constant_override("separation", 6)
+	for index in range(PAGE_NAMES.size()):
+		var tab := _tab_button(PAGE_NAMES[index], index == _active_page)
+		tab.pressed.connect(_set_page.bind(index))
+		_page_tabs.append(tab)
+		row.add_child(tab)
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(spacer)
 	row.add_child(CoinBar.new())
+	var close := _close_button()
+	close.pressed.connect(func(): SceneManager.change_scene(GameData.SCENE_ROSTER))
+	row.add_child(close)
 	return row
 
 
+func _page_panel() -> Control:
+	var panel := _wood_panel(Color("3a2719"), Color("c3944d"))
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(scroll)
+	_page_content = VBoxContainer.new()
+	_page_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_page_content.add_theme_constant_override("separation", 8)
+	scroll.add_child(_page_content)
+	return panel
+
+
+func _set_page(index: int) -> void:
+	_active_page = index
+	for tab_index in range(_page_tabs.size()):
+		_page_tabs[tab_index].add_theme_stylebox_override("normal", _tab_style(tab_index == _active_page))
+	_refresh_page()
+
+
+func _refresh_page() -> void:
+	for child in _page_content.get_children():
+		_page_content.remove_child(child)
+		child.queue_free()
+	match _active_page:
+		0:
+			_page_content.add_child(_stats_panel())
+		1:
+			_page_content.add_child(_skill_panel())
+		2:
+			_page_content.add_child(_star_panel())
+		_:
+			_page_content.add_child(_level_panel())
+			_page_content.add_child(_equipment_panel())
+			_page_content.add_child(_treasure_panel())
+			_page_content.add_child(_gem_panel())
+
+
 func _portrait_panel() -> Control:
-	var panel := UIKit.panel(Color(0.05, 0.08, 0.14, 0.94), 16, UIKit.tier_color(GameData.char_tier(character_id)), 2)
-	panel.custom_minimum_size = Vector2(330, 0)
+	var panel := _wood_panel(Color("332114"), UIKit.tier_color(GameData.char_tier(character_id)))
+	panel.custom_minimum_size = Vector2(300, 0)
 	var col := VBoxContainer.new()
 	col.alignment = BoxContainer.ALIGNMENT_CENTER
-	col.add_theme_constant_override("separation", 8)
+	col.add_theme_constant_override("separation", 5)
 	panel.add_child(col)
 	col.add_child(UIKit.tier_badge(GameData.char_tier(character_id), 18))
-	col.add_child(UIKit.character_view(character_id, 255.0, Vector2(290, 290)))
-	col.add_child(UIKit.label(GameData.char_name(character_id), 30, UIKit.TEXT_COLOR, HORIZONTAL_ALIGNMENT_CENTER))
-	col.add_child(UIKit.label(String(GameData.CHARACTERS[character_id]["role"]), 15, UIKit.MUTED_COLOR, HORIZONTAL_ALIGNMENT_CENTER))
-	team_button = UIKit.button("", Color("367d62"), 17, Vector2(270, 48))
+	col.add_child(UIKit.character_view(character_id, 220.0, Vector2(260, 235)))
+	col.add_child(UIKit.label(GameData.char_name(character_id), 27, Color("fff0d6"), HORIZONTAL_ALIGNMENT_CENTER))
+	col.add_child(UIKit.label(String(GameData.CHARACTERS[character_id]["role"]), 13, Color("d6bd93"), HORIZONTAL_ALIGNMENT_CENTER))
+	_level_label = UIKit.label("CẤP %d   ·   ★ %d" % [GameState.level_of(character_id), GameState.stars_of(character_id)], 13, Color("e7cf9f"), HORIZONTAL_ALIGNMENT_CENTER)
+	col.add_child(_level_label)
+	cp_label = UIKit.label("⚔ CHIẾN LỰC  %s" % _number(GameState.calcCharacterCP(character_id)), 18, Color("ffe08a"), HORIZONTAL_ALIGNMENT_CENTER)
+	col.add_child(cp_label)
+	team_button = _gold_button("", Vector2(246, 38))
 	team_button.pressed.connect(_toggle_team)
 	col.add_child(team_button)
-	var pet_button := UIKit.button("THÚ CƯNG ĐỘI", Color("7250a7"), 16, Vector2(270, 44))
+	var pet_button := _gold_button("THÚ CƯNG ĐỘI", Vector2(246, 36))
 	pet_button.pressed.connect(func(): SceneManager.change_scene(GameData.SCENE_PETS))
 	col.add_child(pet_button)
-	var equipment_button := UIKit.button("KHO TRANG BỊ", Color("397b52"), 16, Vector2(270, 44))
+	var equipment_button := _gold_button("KHO TRANG BỊ", Vector2(246, 36))
 	equipment_button.pressed.connect(_open_equipment)
 	col.add_child(equipment_button)
 	_refresh_team_button()
@@ -99,14 +143,16 @@ func _toggle_team() -> void:
 		UIKit.toast(self, "Đội đã đủ 6 người hoặc cần giữ ít nhất 1 nhân vật.")
 		return
 	_refresh_team_button()
+	_refresh_character_header()
 
 
 func _stats_panel() -> Control:
-	var panel := UIKit.panel(Color(0.05, 0.08, 0.14, 0.94), 14, Color("46698f"), 2)
+	var panel := _wood_panel(Color("f0dfbd"), Color("ae7d3d"))
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 5)
 	panel.add_child(col)
-	col.add_child(UIKit.label("CHỈ SỐ CHIẾN ĐẤU", 20, Color("a9d4ff")))
+	col.add_child(UIKit.label("THUỘC TÍNH", 20, Color("754414")))
+	col.add_child(UIKit.label("⚔ CHIẾN LỰC  %s" % _number(GameState.calcCharacterCP(character_id)), 17, Color("a36613")))
 	var base: Dictionary = GameData.BASE_STATS[character_id]
 	var bonus: Dictionary = GameState.character_flat_bonus(character_id)
 	var stars := GameState.stars_of(character_id)
@@ -115,19 +161,20 @@ func _stats_panel() -> Control:
 	var support_bonus: Dictionary = GameState.support_team_bonus() if GameState.team.has(character_id) else {"hp": 0, "atk": 0, "mag": 0, "def": 0}
 	var gear_pet_bonus: Dictionary = {}
 	for stat in ["hp", "atk", "mag", "def"]:
-		gear_pet_bonus[stat] = int(bonus[stat]) - int(source_bonus[stat])
+		var level_bonus: int = int(GameData.CHARACTER_LEVEL_STAT_PER_STEP.get(stat, 0)) * maxi(0, GameState.level_of(character_id) - 1)
+		gear_pet_bonus[stat] = int(bonus[stat]) - int(source_bonus[stat]) - level_bonus
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
 	for stat in ["hp", "atk", "mag", "def"]:
 		var col_stat := VBoxContainer.new()
 		col_stat.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		col_stat.add_child(UIKit.label(_stat_name(stat), 13, UIKit.MUTED_COLOR, HORIZONTAL_ALIGNMENT_CENTER))
+		col_stat.add_child(UIKit.label(_stat_name(stat), 13, Color("755d42"), HORIZONTAL_ALIGNMENT_CENTER))
 		var after_percent: int = int(round((float(base[stat]) + float(bonus[stat])) * (1.0 + float(percent_bonus[stat]))))
 		var final_value: int = after_percent + int(support_bonus[stat])
-		col_stat.add_child(UIKit.label(_fmt(final_value), 17, Color.WHITE, HORIZONTAL_ALIGNMENT_CENTER))
-		col_stat.add_child(UIKit.label("+%d cố định · +%.1f%%" % [int(gear_pet_bonus[stat]), float(percent_bonus[stat]) * 100.0], 11, Color("86d8bf"), HORIZONTAL_ALIGNMENT_CENTER))
+		col_stat.add_child(UIKit.label(_fmt(final_value), 17, Color("332316"), HORIZONTAL_ALIGNMENT_CENTER))
+		col_stat.add_child(UIKit.label("+%d cố định · +%.1f%%" % [int(gear_pet_bonus[stat]), float(percent_bonus[stat]) * 100.0], 10, Color("577c55"), HORIZONTAL_ALIGNMENT_CENTER))
 		if int(support_bonus[stat]) > 0:
-			col_stat.add_child(UIKit.label("+%d đội cổ vũ" % int(support_bonus[stat]), 10, Color("d4c1ff"), HORIZONTAL_ALIGNMENT_CENTER))
+			col_stat.add_child(UIKit.label("+%d đội cổ vũ" % int(support_bonus[stat]), 10, Color("74529a"), HORIZONTAL_ALIGNMENT_CENTER))
 		row.add_child(col_stat)
 	col.add_child(row)
 	var secondary: Dictionary = GameData.SECONDARY_STATS[character_id]
@@ -135,7 +182,7 @@ func _stats_panel() -> Control:
 	var gem_percent: Dictionary = GameState.character_percent_bonus(character_id)
 	var total_crit: float = (float(secondary["crit"]) * (1.0 + float(gem_percent["crit"]))) + float(gem_secondary["crit"])
 	var total_crit_dmg: float = (float(secondary["crit_dmg"]) * (1.0 + float(gem_percent["crit_dmg"]))) + float(gem_secondary["crit_dmg"])
-	col.add_child(UIKit.label("Tốc độ %d   ·   Crit %.1f%% / %.1f%%   ·   Chính xác %.0f%%   ·   Né %.0f%%   ·   Kháng hiệu ứng %.0f%%" % [int(secondary["spd"]), total_crit * 100.0, total_crit_dmg * 100.0, float(secondary["accuracy"]) * 100.0, float(secondary["evasion"]) * 100.0, float(secondary["effect_res"]) * 100.0], 14, Color("e8d39c"), HORIZONTAL_ALIGNMENT_CENTER))
+	col.add_child(UIKit.label("Tốc độ %d   ·   Crit %.1f%% / %.1f%%   ·   Chính xác %.0f%%   ·   Né %.0f%%   ·   Kháng hiệu ứng %.0f%%" % [int(secondary["spd"]), total_crit * 100.0, total_crit_dmg * 100.0, float(secondary["accuracy"]) * 100.0, float(secondary["evasion"]) * 100.0, float(secondary["effect_res"]) * 100.0], 12, Color("755d42"), HORIZONTAL_ALIGNMENT_CENTER))
 	var skill_names: Array = GameData.SKILL_NAMES.get(character_id, [])
 	if not skill_names.is_empty():
 		var skill_label := UIKit.label("Chiêu thức: %s" % " · ".join(skill_names), 12, UIKit.MUTED_COLOR)
@@ -145,13 +192,13 @@ func _stats_panel() -> Control:
 
 
 func _star_panel() -> Control:
-	var panel := UIKit.panel(Color(0.08, 0.07, 0.11, 0.95), 14, Color("bd8d3b"), 2)
+	var panel := _wood_panel(Color("f0dfbd"), Color("bd8d3b"))
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 6)
 	panel.add_child(col)
 	var current: int = GameState.stars_of(character_id)
-	col.add_child(UIKit.label("NÂNG SAO · %d/%d" % [current, GameData.MAX_STARS], 20, GOLD))
-	col.add_child(UIKit.label("Dùng bản sao của chính nhân vật để nâng sao. Mỗi bậc cộng chỉ số cố định.", 13, UIKit.MUTED_COLOR))
+	col.add_child(UIKit.label("THĂNG SAO · %d/%d" % [current, GameData.MAX_STARS], 20, Color("8a5a20")))
+	col.add_child(UIKit.label("Dùng bản sao của nhân vật để tăng cấp sao và chỉ số cố định.", 12, Color("755d42")))
 	var grid := GridContainer.new()
 	grid.columns = 5
 	grid.add_theme_constant_override("h_separation", 10)
@@ -160,16 +207,16 @@ func _star_panel() -> Control:
 		grid.add_child(UIKit.label(label_text, 12, Color("d3c7ae"), HORIZONTAL_ALIGNMENT_CENTER))
 	for star in range(1, GameData.MAX_STARS + 1):
 		var values: Dictionary = GameData.star_bonus(star)
-		var tint: Color = GOLD if star == current else UIKit.MUTED_COLOR
+		var tint: Color = Color("9a641d") if star == current else Color("755d42")
 		grid.add_child(UIKit.label("%d★" % star, 13, tint, HORIZONTAL_ALIGNMENT_CENTER))
 		for stat in ["hp", "atk", "mag", "def"]:
 			grid.add_child(UIKit.label("+%s" % _fmt(int(values[stat])), 12, tint, HORIZONTAL_ALIGNMENT_CENTER))
 	col.add_child(grid)
 	var next_star: int = current + 1
 	var next_cost: int = int(GameData.STAR_COPY_COST.get(next_star, 0))
-	col.add_child(UIKit.label("Bản sao hiện có: %d" % GameState.copies_of(character_id), 14, Color("e8d39c")))
+	col.add_child(UIKit.label("Bản sao hiện có: %d" % GameState.copies_of(character_id), 14, Color("63472b")))
 	var upgrade_text := "TỐI ĐA 15 SAO" if current >= GameData.MAX_STARS else "NÂNG LÊN %d SAO · %d bản sao" % [next_star, next_cost]
-	var upgrade := UIKit.button(upgrade_text, Color("9b7028"), 15, Vector2(300, 42))
+	var upgrade := _gold_button(upgrade_text, Vector2(300, 42))
 	upgrade.disabled = current >= GameData.MAX_STARS
 	if current < GameData.MAX_STARS and GameState.copies_of(character_id) < next_cost:
 		upgrade.disabled = true
@@ -188,7 +235,8 @@ func _upgrade_star() -> void:
 		UIKit.toast(self, "Chưa đủ bản sao của %s · cần %d." % [GameData.char_name(character_id), cost])
 		return
 	await _show_star_up_transition(old_stars, GameState.stars_of(character_id))
-	SceneManager.change_scene(GameData.SCENE_CHARACTER)
+	_refresh_character_header()
+	_refresh_page()
 
 
 func _show_star_up_transition(old_stars: int, new_stars: int) -> void:
@@ -227,17 +275,42 @@ func _show_star_up_transition(old_stars: int, new_stars: int) -> void:
 	overlay.queue_free()
 
 
+func _level_panel() -> Control:
+	var panel := _wood_panel(Color("f0dfbd"), Color("82a5bd"))
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", 6)
+	panel.add_child(col)
+	var level: int = GameState.level_of(character_id)
+	col.add_child(UIKit.label("CẤP NHÂN VẬT · %d / %d" % [level, GameData.MAX_CHARACTER_LEVEL], 18, Color("754414")))
+	col.add_child(UIKit.label("Mỗi cấp tăng chỉ số cơ bản và cập nhật chiến lực.", 12, Color("755d42")))
+	var cost: int = GameState.level_up_cost(character_id)
+	var button := _gold_button("NÂNG CẤP · %d xu" % cost if level < GameData.MAX_CHARACTER_LEVEL else "ĐÃ ĐẠT CẤP TỐI ĐA", Vector2(230, 40))
+	button.disabled = level >= GameData.MAX_CHARACTER_LEVEL or GameState.coins < cost
+	button.pressed.connect(_level_up)
+	col.add_child(button)
+	return panel
+
+
+func _level_up() -> void:
+	if not GameState.level_up_character(character_id):
+		UIKit.toast(self, "Không đủ xu hoặc nhân vật đã đạt cấp tối đa.")
+		return
+	_refresh_character_header()
+	_refresh_page()
+	UIKit.toast(self, "%s đã lên cấp %d." % [GameData.char_name(character_id), GameState.level_of(character_id)])
+
+
 func _equipment_panel() -> Control:
-	var panel := UIKit.panel(Color(0.05, 0.08, 0.14, 0.94), 14, Color("65749a"), 2)
+	var panel := _wood_panel(Color("f0dfbd"), Color("ae7d3d"))
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 4)
 	panel.add_child(col)
-	col.add_child(UIKit.label("TRANG BỊ", 20, Color("c3d1ff")))
+	col.add_child(UIKit.label("TRANG BỊ", 18, Color("754414")))
 	var equipped: Dictionary = GameState.equipment.get(character_id, {})
 	for slot in GameData.EQUIPMENT_SLOTS:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
-		var slot_label := UIKit.label(slot, 14, UIKit.MUTED_COLOR)
+		var slot_label := UIKit.label(slot, 13, Color("755d42"))
 		slot_label.custom_minimum_size.x = 88
 		row.add_child(slot_label)
 		var options: Array = [""]
@@ -265,16 +338,16 @@ func _equipment_panel() -> Control:
 
 
 func _treasure_panel() -> Control:
-	var panel := UIKit.panel(Color(0.05, 0.08, 0.14, 0.94), 14, Color("c99c55"), 2)
+	var panel := _wood_panel(Color("f0dfbd"), Color("c99c55"))
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 6)
 	panel.add_child(col)
-	col.add_child(UIKit.label("BẢO VẬT", 20, Color("f0d08a")))
+	col.add_child(UIKit.label("BẢO VẬT", 18, Color("754414")))
 	var equipped: Dictionary = GameState.treasures.get(character_id, {})
 	for slot in GameData.TREASURE_SLOTS:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
-		var slot_label := UIKit.label(slot, 14, UIKit.MUTED_COLOR)
+		var slot_label := UIKit.label(slot, 13, Color("755d42"))
 		slot_label.custom_minimum_size.x = 88
 		row.add_child(slot_label)
 		var select := OptionButton.new()
@@ -297,12 +370,12 @@ func _treasure_panel() -> Control:
 
 
 func _gem_panel() -> Control:
-	var panel := UIKit.panel(Color(0.05, 0.08, 0.14, 0.94), 14, Color("55bca4"), 2)
+	var panel := _wood_panel(Color("f0dfbd"), Color("55bca4"))
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 7)
 	panel.add_child(col)
-	col.add_child(UIKit.label("NGỌC · 10 CẤP · 2 NHÓM CHỈ SỐ", 20, Color("75e2c7")))
-	var description := UIKit.label("Pha lê: cộng cố định. Lục giác: cộng theo phần trăm. Ghép 3 viên cùng loại cấp thấp thành 1 viên cấp kế tiếp.", 12, UIKit.MUTED_COLOR)
+	col.add_child(UIKit.label("NGỌC · 10 CẤP · 2 NHÓM CHỈ SỐ", 18, Color("3d806e")))
+	var description := UIKit.label("Pha lê: cộng cố định. Lục giác: cộng theo phần trăm. Ghép 3 viên cùng loại cấp thấp thành 1 viên cấp kế tiếp.", 11, Color("755d42"))
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	col.add_child(description)
 	var equipped: Dictionary = GameState.gems_equipped.get(character_id, {})
@@ -320,7 +393,7 @@ func _gem_panel() -> Control:
 			var name_label := UIKit.label("%s %s" % [String(data["shape"]), String(data["name"])], 12, text_tint)
 			name_label.custom_minimum_size.x = 158
 			row.add_child(name_label)
-			var strength := UIKit.label(_gem_strength_text(data), 10, UIKit.MUTED_COLOR)
+			var strength := UIKit.label(_gem_strength_text(data), 9, Color("755d42"))
 			strength.custom_minimum_size.x = 104
 			row.add_child(strength)
 			var select := OptionButton.new()
@@ -352,38 +425,40 @@ func _gem_panel() -> Control:
 func _on_treasure_selected(index: int, id: String, slot: String, select: OptionButton) -> void:
 	var treasure_id: String = String(select.get_item_metadata(index))
 	if GameState.equip_treasure(id, slot, treasure_id):
-		SceneManager.change_scene(GameData.SCENE_CHARACTER)
+		_refresh_character_header()
+		_refresh_page()
 
 
 func _on_gem_selected(index: int, id: String, gem_type: String, select: OptionButton) -> void:
 	var level: int = int(select.get_item_metadata(index))
 	if GameState.equip_gem(id, gem_type, level):
-		SceneManager.change_scene(GameData.SCENE_CHARACTER)
+		_refresh_character_header()
+		_refresh_page()
 	else:
 		UIKit.toast(self, "Không có viên ngọc đó trong túi.")
 
 
 func _combine_gem(gem_type: String, level: int) -> void:
 	if GameState.combine_gems(gem_type, level):
-		SceneManager.change_scene(GameData.SCENE_CHARACTER)
+		_refresh_page()
 	else:
 		UIKit.toast(self, "Cần 3 viên %s cấp %d." % [GameData.GEMS[gem_type]["name"], level])
 
 
 func _skill_panel() -> Control:
-	var panel := UIKit.panel(Color(0.05, 0.08, 0.14, 0.94), 14, Color("8a69a8"), 2)
+	var panel := _wood_panel(Color("f0dfbd"), Color("8a69a8"))
 	var col := VBoxContainer.new()
 	col.add_theme_constant_override("separation", 8)
 	panel.add_child(col)
-	col.add_child(UIKit.label("KỸ NĂNG THEO TÀI LIỆU V2", 20, Color("d8b8ff")))
+	col.add_child(UIKit.label("KỸ NĂNG", 20, Color("754414")))
 	var profile: Dictionary = skill_profiles.get(character_id, {})
 	var labels := {"passive": "Nội tại", "basic": "Đánh thường", "s1": "Kỹ năng 1", "s2": "Kỹ năng 2", "ult": "Tuyệt kỹ"}
 	for key in ["passive", "basic", "s1", "s2", "ult"]:
 		var item: Dictionary = profile.get(key, {})
 		if item.is_empty():
 			continue
-		col.add_child(UIKit.label("%s · %s" % [labels[key], String(item.get("title", ""))], 15, Color("ffe0a1")))
-		var body_text := UIKit.label(String(item.get("description", "")), 13, UIKit.TEXT_COLOR)
+		col.add_child(UIKit.label("%s · %s" % [labels[key], String(item.get("title", ""))], 15, Color("8a5a20")))
+		var body_text := UIKit.label(String(item.get("description", "")), 13, Color("332316"))
 		body_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		col.add_child(body_text)
 	return panel
@@ -394,7 +469,59 @@ func _on_equipment_selected(index: int, id: String, slot: String, options: Array
 		return
 	var item_id: String = String(options[index])
 	if GameState.equip_item(id, slot, item_id):
-		SceneManager.change_scene(GameData.SCENE_CHARACTER)
+		_refresh_character_header()
+		_refresh_page()
+
+
+func _refresh_character_header() -> void:
+	if cp_label != null:
+		cp_label.text = "⚔ CHIẾN LỰC  %s" % _number(GameState.calcCharacterCP(character_id))
+	if _level_label != null:
+		_level_label.text = "CẤP %d   ·   ★ %d" % [GameState.level_of(character_id), GameState.stars_of(character_id)]
+
+
+func _wood_panel(bg: Color, border: Color) -> PanelContainer:
+	var panel := UIKit.panel(bg, 10, border, 2)
+	panel.add_theme_stylebox_override("panel", UIKit.style(bg, 10, border, 2, 8.0))
+	return panel
+
+
+func _gold_button(text: String, size: Vector2) -> Button:
+	var button := UIKit.button(text, Color("916127"), 13, size)
+	button.add_theme_stylebox_override("normal", UIKit.style(Color("a87935"), 7, Color("e7c172"), 2, 4.0))
+	button.add_theme_stylebox_override("hover", UIKit.style(Color("be914b"), 7, Color("ffebac"), 2, 4.0))
+	button.add_theme_color_override("font_color", Color("fff2d2"))
+	return button
+
+
+func _tab_button(text: String, active: bool) -> Button:
+	var button := UIKit.button(text, Color("57341f"), 12, Vector2(118, 42))
+	button.add_theme_stylebox_override("normal", _tab_style(active))
+	button.add_theme_stylebox_override("hover", UIKit.style(Color("176caa").lightened(0.12) if active else Color("68452c"), 7, Color("80d8ff") if active else Color("d4a75e"), 2, 4.0))
+	return button
+
+
+func _tab_style(active: bool) -> StyleBoxFlat:
+	var fill := Color("176caa") if active else Color("57341f")
+	var rim := Color("80d8ff") if active else Color("b5844a")
+	return UIKit.style(fill, 7, rim, 2, 4.0)
+
+
+func _close_button() -> Button:
+	var button := UIKit.button("×", Color("ad202b"), 25, Vector2(42, 40))
+	button.add_theme_stylebox_override("normal", UIKit.style(Color("b6202a"), 20, Color("ffd4a3"), 3, 0.0))
+	button.add_theme_stylebox_override("hover", UIKit.style(Color("e54942"), 20, Color.WHITE, 3, 0.0))
+	return button
+
+
+func _number(value: int) -> String:
+	var raw := str(value)
+	var output := ""
+	for index in range(raw.length()):
+		if index > 0 and (raw.length() - index) % 3 == 0:
+			output += ","
+		output += raw[index]
+	return output
 
 
 func _stat_name(stat: String) -> String:

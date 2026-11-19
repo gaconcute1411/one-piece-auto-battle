@@ -132,7 +132,7 @@ func _build_side_column() -> Control:
 # ---------------------------------------------------------------- hàng đáy
 func _build_bottom_nav() -> Control:
 	var bar := PanelContainer.new()
-	bar.add_theme_stylebox_override("panel", UIKit.style(Color(0.04, 0.05, 0.09, 0.80), 18, Color(1, 1, 1, 0.12), 2, 8.0))
+	bar.add_theme_stylebox_override("panel", UIKit.style(Color(0.16, 0.09, 0.04, 0.88), 12, Color("bd9152"), 2, 8.0))
 
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 10)
@@ -140,12 +140,12 @@ func _build_bottom_nav() -> Control:
 
 	var items := [
 		{"key": "formation", "label": "Đội hình", "color": Color("3c8d5a"), "scene": GameData.SCENE_FORMATION},
-		{"key": "pet", "label": "Thú cưng", "color": Color("347f9a"), "scene": GameData.SCENE_PETS},
-		{"key": "summon", "label": "Triệu hồi", "color": Color("8a4fd8"), "scene": GameData.SCENE_GACHA},
+		{"key": "heroes", "label": "Nhân vật", "color": Color("b85242"), "scene": GameData.SCENE_ROSTER},
 		{"key": "equipment", "label": "Trang bị", "color": Color("b07a2a"), "scene": GameData.SCENE_EQUIPMENT},
-		{"key": "friends", "label": "Bạn bè", "color": Color("d0607a"), "scene": ""},
-		{"key": "guild", "label": "Bang hội", "color": Color("2f6fed"), "scene": ""},
-		{"key": "mail", "label": "Thư", "color": Color("9a7b5a"), "scene": ""},
+		{"key": "training", "label": "Huấn luyện", "color": Color("bd7b34"), "scene": GameData.SCENE_TRAINING},
+		{"key": "summon", "label": "Triệu hồi", "color": Color("8a4fd8"), "scene": GameData.SCENE_GACHA},
+		{"key": "pet", "label": "Thú cưng", "color": Color("347f9a"), "scene": GameData.SCENE_PETS},
+		{"key": "shop", "label": "Cửa hàng", "color": Color("3c8d5a"), "scene": GameData.SCENE_SHOP},
 		{"key": "exit", "label": "Thoát", "color": Color("4a4f63"), "scene": GameData.SCENE_TITLE},
 	]
 	for it in items:
